@@ -112,12 +112,18 @@
   h1{
     font-family:'Inter',sans-serif;
     font-weight:600;
-    font-size:clamp(52px,11vw,128px);
-    line-height:0.95;
+    font-size:clamp(38px,10vw,116px);
+    line-height:1.0;
     letter-spacing:-0.03em;
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
+    gap:0 0.28em;
+    max-width:92vw;
+  }
+
+  h1 .word{
+    display:inline-flex;
   }
 
   h1 .ch{
@@ -227,6 +233,23 @@
     text-transform:uppercase;
   }
 
+  @media (max-width:640px){
+    .blob.b1{width:320px;height:320px;}
+    .blob.b2{width:280px;height:280px;}
+    .blob.b3{width:200px;height:200px;}
+    .glow{width:260px;height:260px;}
+    .eyebrow{font-size:10.5px; letter-spacing:0.16em; margin-bottom:20px;}
+    .tagline{font-size:17px; padding:0 8px;}
+    .band{margin:0 -6vw;}
+    .marquee span{padding:0 18px; font-size:14px;}
+    footer{padding:48px 20px; min-height:32svh;}
+    footer .note{font-size:19px;}
+  }
+
+  @media (hover:none){
+    .glow{display:none;}
+  }
+
   @media (prefers-reduced-motion: reduce){
     .blob{animation:none;}
     .marquee{animation:none;}
@@ -247,7 +270,7 @@
 
 <section class="hero">
   <div class="eyebrow">Personal site — in progress</div>
-  <h1 id="name" aria-label="Janagiram"></h1>
+  <h1 id="name" aria-label="Janagiram Kumar"></h1>
   <p class="tagline">A new site is being built <em>with care</em>. Back soon.</p>
   <div class="scrollcue"></div>
 </section>
@@ -261,24 +284,31 @@
 
 <footer>
   <p class="note">Thank you for stopping by while this takes shape.</p>
-  <p class="meta">© 2026 Janagiram</p>
+  <p class="meta">©2026 Janagiram Kumar</p>
 </footer>
 
 <script>
   // Kinetic letter reveal
   const el = document.getElementById('name');
-  const name = "Janagiram";
+  const words = ["Janagiram", "Kumar"];
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  [...name].forEach((c, i) => {
-    const span = document.createElement('span');
-    span.className = 'ch';
-    span.textContent = c;
-    if(!reduce){
-      span.style.animationDelay = (0.35 + i * 0.06) + 's';
-    } else {
-      span.style.opacity = 1;
-    }
-    el.appendChild(span);
+  let i = 0;
+  words.forEach((word) => {
+    const wrap = document.createElement('span');
+    wrap.className = 'word';
+    [...word].forEach((c) => {
+      const span = document.createElement('span');
+      span.className = 'ch';
+      span.textContent = c;
+      if(!reduce){
+        span.style.animationDelay = (0.35 + i * 0.05) + 's';
+      } else {
+        span.style.opacity = 1;
+      }
+      wrap.appendChild(span);
+      i++;
+    });
+    el.appendChild(wrap);
   });
 
   // Cursor-following glow
