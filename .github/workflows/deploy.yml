@@ -50,29 +50,40 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      # GitHub's internal branch-based build (pages-build-deployment) races this
-      # workflow on push and publishes raw source if it finishes last. Wait it out
-      # so our artifact is always the final deployment.
+      # GitHub's internal branch-based build ("pages build and deployment") is
+      # triggered by the same push and publishes raw source if it finishes last.
+      # Wait it out so OUR artifact is always the final deployment.
       - name: Wait for in-flight branch Pages builds to finish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           for i in $(seq 1 40); do
-            pending=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pages-build-deployment/runs?per_page=10" \
-              --jq '[.workflow_runs[] | select(.status != "completed")] | length' 2>/dev/null || echo 0)
-            if [ "${pending:-0}" = "0" ]; then
-              echo "No Pages branch builds in flight."
+            pending=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs?per_page=30" \
+              --jq '[.workflow_runs[] | select(.name == "pages build and deployment" and .status != "completed")] | length' 2>/dev/null || true)
+            case "$pending" in
+              ''|*[!0-9]*) pending=0 ;;
+            esac
+            if [ "$pending" = "0" ]; then
+              echo "No branch Pages builds in flight."
               exit 0
             fi
-            echo "Waiting on ${pending} pages-build-deployment run(s)… (${i}/40)"
+            echo "Waiting on ${pending} branch Pages build(s) before deploying… (${i}/40)"
             sleep 10
           done
-          echo "Timed out waiting for branch builds; continuing."
+          echo "Timed out waiting for branch builds; deploying anyway."
 
-      - name: Switch Pages build source to GitHub Actions
+      # Best effort: once the source is "GitHub Actions" the branch build is
+      # never triggered again and this becomes a no-op.
+      - name: Switch Pages build source to GitHub Actions (best effort)
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh api -X PATCH "repos/${GITHUB_REPOSITORY}/pages" -f build_type=workflow
+        run: |
+          if gh api -X PATCH "repos/${GITHUB_REPOSITORY}/pages" -f build_type=workflow; then
+            echo "Pages source set to GitHub Actions."
+          else
+            echo "::warning::Could not switch Pages source via API — set it manually: repo Settings → Pages → Source → GitHub Actions"
+          fi
 
       - name: Deploy to GitHub Pages
         id: deployment
