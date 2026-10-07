@@ -1,327 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Janagiram</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#0A0B0D;
-    --panel:#141619;
-    --ivory:#F4EFE4;
-    --gold:#C9A24B;
-    --teal:#3F6659;
-    --muted:#8D8A82;
-  }
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#05070a" />
 
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--ink);
-    color:var(--ivory);
-    font-family:'Inter',sans-serif;
-    overflow-x:hidden;
-  }
+    <title>Janagiram Kumar | Software Engineer • AI • Networking • DevOps</title>
+    <meta
+      name="description"
+      content="Portfolio of Janagiram Kumar — software engineer focused on AI agents, backend systems, networking, DevOps, and scalable software engineering."
+    />
+    <meta name="author" content="Janagiram Kumar" />
+    <meta
+      name="keywords"
+      content="Janagiram Kumar, software engineer, AI agents, backend engineering, networking, DevOps, Google ADK, OpenStack, portfolio"
+    />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
 
-  /* ---------- ambient background ---------- */
-  .bg{
-    position:fixed;
-    inset:0;
-    z-index:0;
-    overflow:hidden;
-    pointer-events:none;
-  }
-  .blob{
-    position:absolute;
-    border-radius:50%;
-    filter:blur(90px);
-    opacity:0.35;
-    animation:drift 22s ease-in-out infinite;
-  }
-  .blob.b1{
-    width:520px;height:520px;
-    background:var(--gold);
-    top:-10%;left:-10%;
-  }
-  .blob.b2{
-    width:460px;height:460px;
-    background:var(--teal);
-    bottom:-15%;right:-8%;
-    animation-delay:-9s;
-  }
-  .blob.b3{
-    width:340px;height:340px;
-    background:#7A5230;
-    top:40%;left:55%;
-    animation-delay:-15s;
-    opacity:0.22;
-  }
-  @keyframes drift{
-    0%,100%{transform:translate(0,0) scale(1);}
-    50%{transform:translate(40px,-30px) scale(1.08);}
-  }
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Janagiram Kumar" />
+    <meta property="og:title" content="Janagiram Kumar | Software Engineer • AI • Networking • DevOps" />
+    <meta
+      property="og:description"
+      content="Portfolio of Janagiram Kumar — software engineer focused on AI agents, backend systems, networking, DevOps, and scalable software engineering."
+    />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Janagiram Kumar | Software Engineer • AI • Networking • DevOps" />
+    <meta
+      name="twitter:description"
+      content="Portfolio of Janagiram Kumar — software engineer focused on AI agents, backend systems, networking, DevOps, and scalable software engineering."
+    />
 
-  .grain{
-    position:fixed;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
-    opacity:0.05;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  }
-
-  .glow{
-    position:fixed;
-    z-index:1;
-    width:420px;height:420px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(201,162,75,0.10) 0%, transparent 70%);
-    pointer-events:none;
-    transform:translate(-50%,-50%);
-    transition:opacity .3s ease;
-  }
-
-  /* ---------- hero ---------- */
-  .hero{
-    position:relative;
-    z-index:2;
-    min-height:100svh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:24px;
-  }
-
-  .eyebrow{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12px;
-    letter-spacing:0.22em;
-    text-transform:uppercase;
-    color:var(--gold);
-    margin-bottom:28px;
-    opacity:0;
-    animation:fadeUp .8s ease forwards;
-    animation-delay:.15s;
-  }
-
-  h1{
-    font-family:'Inter',sans-serif;
-    font-weight:600;
-    font-size:clamp(38px,10vw,116px);
-    line-height:1.0;
-    letter-spacing:-0.03em;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:0 0.28em;
-    max-width:92vw;
-  }
-
-  h1 .word{
-    display:inline-flex;
-  }
-
-  h1 .ch{
-    display:inline-block;
-    opacity:0;
-    transform:translateY(28px);
-    animation:fadeUp .7s cubic-bezier(.2,.8,.2,1) forwards;
-  }
-
-  .tagline{
-    font-family:'Instrument Serif',serif;
-    font-style:italic;
-    font-size:clamp(20px,2.6vw,28px);
-    color:var(--muted);
-    margin-top:22px;
-    opacity:0;
-    animation:fadeUp .8s ease forwards;
-    animation-delay:1.05s;
-  }
-
-  .tagline em{
-    color:var(--ivory);
-    font-style:italic;
-  }
-
-  @keyframes fadeUp{
-    to{opacity:1; transform:translateY(0);}
-  }
-
-  .scrollcue{
-    position:absolute;
-    bottom:34px;
-    left:50%;
-    transform:translateX(-50%);
-    width:1px;
-    height:52px;
-    background:linear-gradient(var(--gold), transparent);
-    opacity:0;
-    animation:fadeUp .8s ease forwards, bob 2.2s ease-in-out infinite;
-    animation-delay:1.4s, 1.4s;
-  }
-  @keyframes bob{
-    0%,100%{transform:translate(-50%,0);}
-    50%{transform:translate(-50%,8px);}
-  }
-
-  /* ---------- marquee band ---------- */
-  .band{
-    position:relative;
-    z-index:2;
-    background:var(--ivory);
-    color:var(--ink);
-    overflow:hidden;
-    padding:22px 0;
-    transform:rotate(-1.2deg);
-    margin:0 -4vw;
-  }
-  .marquee{
-    display:flex;
-    width:max-content;
-    animation:scroll 26s linear infinite;
-  }
-  .marquee span{
-    font-family:'IBM Plex Mono',monospace;
-    font-weight:500;
-    font-size:clamp(16px,2.4vw,22px);
-    letter-spacing:0.04em;
-    text-transform:uppercase;
-    padding:0 28px;
-    white-space:nowrap;
-  }
-  .marquee span::after{
-    content:"✦";
-    margin-left:28px;
-    color:var(--gold);
-  }
-  @keyframes scroll{
-    from{transform:translateX(0);}
-    to{transform:translateX(-50%);}
-  }
-
-  /* ---------- footer ---------- */
-  footer{
-    position:relative;
-    z-index:2;
-    min-height:40svh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:60px 24px;
-    gap:14px;
-  }
-  footer .note{
-    font-family:'Instrument Serif',serif;
-    font-style:italic;
-    font-size:clamp(22px,3vw,32px);
-    color:var(--ivory);
-    max-width:32ch;
-  }
-  footer .meta{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12px;
-    letter-spacing:0.1em;
-    color:var(--muted);
-    text-transform:uppercase;
-  }
-
-  @media (max-width:640px){
-    .blob.b1{width:320px;height:320px;}
-    .blob.b2{width:280px;height:280px;}
-    .blob.b3{width:200px;height:200px;}
-    .glow{width:260px;height:260px;}
-    .eyebrow{font-size:10.5px; letter-spacing:0.16em; margin-bottom:20px;}
-    .tagline{font-size:17px; padding:0 8px;}
-    .band{margin:0 -6vw;}
-    .marquee span{padding:0 18px; font-size:14px;}
-    footer{padding:48px 20px; min-height:32svh;}
-    footer .note{font-size:19px;}
-  }
-
-  @media (hover:none){
-    .glow{display:none;}
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .blob{animation:none;}
-    .marquee{animation:none;}
-    .scrollcue{animation:none; opacity:1;}
-    h1 .ch, .eyebrow, .tagline{animation:none; opacity:1; transform:none;}
-  }
-</style>
-</head>
-<body>
-
-<div class="bg">
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-</div>
-<div class="grain"></div>
-<div class="glow" id="glow"></div>
-
-<section class="hero">
-  <div class="eyebrow">Personal site — in progress</div>
-  <h1 id="name" aria-label="Janagiram Kumar"></h1>
-  <p class="tagline">A new site is being built <em>with care</em>. Back soon.</p>
-  <div class="scrollcue"></div>
-</section>
-
-<div class="band">
-  <div class="marquee" aria-hidden="true">
-    <span>Coming Soon</span><span>Coming Soon</span><span>Coming Soon</span><span>Coming Soon</span>
-    <span>Coming Soon</span><span>Coming Soon</span><span>Coming Soon</span><span>Coming Soon</span>
-  </div>
-</div>
-
-<footer>
-  <p class="note">Thank you for stopping by while this takes shape.</p>
-  <p class="meta">©2026 Janagiram Kumar</p>
-</footer>
-
-<script>
-  // Kinetic letter reveal
-  const el = document.getElementById('name');
-  const words = ["Janagiram", "Kumar"];
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let i = 0;
-  words.forEach((word) => {
-    const wrap = document.createElement('span');
-    wrap.className = 'word';
-    [...word].forEach((c) => {
-      const span = document.createElement('span');
-      span.className = 'ch';
-      span.textContent = c;
-      if(!reduce){
-        span.style.animationDelay = (0.35 + i * 0.05) + 's';
-      } else {
-        span.style.opacity = 1;
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Janagiram Kumar",
+        "jobTitle": "Software Engineer",
+        "email": "mailto:janagi2368@gmail.com",
+        "url": "%VITE_SITE_URL%/",
+        "sameAs": [
+          "https://github.com/JANAGIRAM-KUMAR",
+          "https://linkedin.com/in/janagiram-kumar"
+        ],
+        "knowsAbout": [
+          "Software Engineering",
+          "AI Agents",
+          "Backend Systems",
+          "DevOps",
+          "Computer Networking"
+        ]
       }
-      wrap.appendChild(span);
-      i++;
-    });
-    el.appendChild(wrap);
-  });
-
-  // Cursor-following glow
-  const glow = document.getElementById('glow');
-  if(!reduce){
-    window.addEventListener('mousemove', (e) => {
-      glow.style.left = e.clientX + 'px';
-      glow.style.top = e.clientY + 'px';
-    });
-  } else {
-    glow.style.display = 'none';
-  }
-</script>
-
-</body>
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <div style="font-family: monospace; padding: 2rem; color: #e5e7eb; background: #05070a">
+        Janagiram Kumar — Software Engineer | AI Agent Developer | Network Engineer.<br />
+        Contact: janagi2368@gmail.com · github.com/JANAGIRAM-KUMAR ·
+        linkedin.com/in/janagiram-kumar
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
