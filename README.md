@@ -244,25 +244,25 @@ via [EmailJS](https://www.emailjs.com) when configured. Setup:
 
 1. Create a free account at <https://dashboard.emailjs.com>.
 2. **Email Services** → add Gmail (connect `janagi2368@gmail.com`) → copy the **Service ID**.
-3. **Email Templates** → create a template with these variables:
+3. **Email Templates** → create a template with the To Email set to `janagi2368@gmail.com`
+   and body using these variables:
    ```
-   To:      janagi2368@gmail.com
-   From:    {{from_name}} <{{from_email}}>
-   Reply-To: {{reply_to}}
-   Subject: Portfolio contact — {{from_name}}
+   Subject: Portfolio contact {{name}}
    Body:
-     {{message}}
-     — {{from_name}} ({{from_email}})
+     Name: {{name}}
+     Email: {{email}}
+
+     Message: {{message}}
    ```
    → copy the **Template ID**.
 4. **Account → General** → copy the **Public Key**.
 5. Put all three in `.env` (local) **and** as Actions variables/secrets
    (repo **Settings → Secrets and variables → Actions → Variables**), then rebuild.
 
-The public key is intentionally public — EmailJS keys are designed to ship in
-browser code. Restrict the allowed domain to `janagiram.dpdns.org` in EmailJS
-settings. If the three values are empty, the form falls back to `mailto:` and
-**no secrets are ever exposed in the frontend**.
+The site ships default Service/Template IDs; only the **Public Key** activates the
+form — without it the form falls back to `mailto:`. The public key is intentionally
+public — EmailJS keys are designed to ship in browser code. Restrict the allowed
+domain to `janagiram.dpdns.org` in EmailJS settings.
 
 ---
 

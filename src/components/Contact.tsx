@@ -6,10 +6,16 @@ import { type ComponentType, useState } from 'react'
 import { PROFILE } from '../data/content'
 import { Panel, Section } from './ui'
 
-const EMAILJS_SERVICE = import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined
-const EMAILJS_TEMPLATE = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined
+// EmailJS identifiers are public by design (they ship with every browser
+// request). Configurable via env (VITE_EMAILJS_*) with baked-in defaults.
+// The PUBLIC_KEY is required by the EmailJS browser SDK — without it the
+// form falls back to mailto:.
+const EMAILJS_SERVICE =
+  (import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined) || 'service_g4o2ec5'
+const EMAILJS_TEMPLATE =
+  (import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined) || 'template_8e8dfdb'
 const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined
-const EMAILJS_ENABLED = Boolean(EMAILJS_SERVICE && EMAILJS_TEMPLATE && EMAILJS_PUBLIC_KEY)
+const EMAILJS_ENABLED = Boolean(EMAILJS_PUBLIC_KEY)
 
 type SendStatus = 'idle' | 'sending' | 'sent' | 'error' | 'mail-client'
 
@@ -82,11 +88,11 @@ export function Contact() {
           EMAILJS_SERVICE!,
           EMAILJS_TEMPLATE!,
           {
-            from_name: name,
-            from_email: email,
-            reply_to: email,
-            to_email: PROFILE.email,
+            // Matches the configured template variables.
+            name,
+            email,
             message,
+            to_email: PROFILE.email,
           },
           { publicKey: EMAILJS_PUBLIC_KEY! },
         )
