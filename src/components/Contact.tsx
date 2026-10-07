@@ -14,7 +14,8 @@ const EMAILJS_SERVICE =
   (import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined) || 'service_g4o2ec5'
 const EMAILJS_TEMPLATE =
   (import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined) || 'template_8e8dfdb'
-const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined
+const EMAILJS_PUBLIC_KEY =
+  (import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined) || 'bkfDl801vABe-1wnM'
 const EMAILJS_ENABLED = Boolean(EMAILJS_PUBLIC_KEY)
 
 type SendStatus = 'idle' | 'sending' | 'sent' | 'error' | 'mail-client'
