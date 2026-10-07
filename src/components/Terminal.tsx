@@ -45,7 +45,7 @@ const INFO: Record<string, Line[]> = {
   contact: [
     { text: `  email      janagi2368@gmail.com`, tone: 'cyan' },
     { text: `  github     github.com/JANAGIRAM-KUMAR`, tone: 'cyan' },
-    { text: `  linkedin   linkedin.com/in/janagiram-kumar`, tone: 'cyan' },
+    { text: `  linkedin   linkedin.com/in/janagiram-kumar-1b918421a`, tone: 'cyan' },
   ],
 }
 

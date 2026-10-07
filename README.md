@@ -109,6 +109,9 @@ nano .env
 | `VITE_SITE_URL`| Public URL used for SEO metadata     | `https://janagiram.dpdns.org`     |
 | `HTTP_PORT`    | Host port mapped to container :80    | `80`                        |
 | `HTTPS_PORT`   | Host port mapped to container :443   | `443`                       |
+| `VITE_EMAILJS_SERVICE_ID`  | EmailJS service id (optional — enables direct form delivery) | `service_xxxxxxx` |
+| `VITE_EMAILJS_TEMPLATE_ID` | EmailJS template id (optional)      | `template_xxxxxxx`          |
+| `VITE_EMAILJS_PUBLIC_KEY`  | EmailJS public key (optional, browser-safe) | `AbCdEf123456`     |
 
 No passwords, API keys, or cloud credentials are required or stored in this project.
 
@@ -190,7 +193,7 @@ Force HTTP → HTTPS by uncommenting the `return 301 https://...` line.
 ├── Dockerfile               # multi-stage: node build → nginx runtime
 ├── docker-compose.yml       # one-command deployment
 ├── nginx.conf               # production web server config
-├── .env.example             # environment variables template
+├── .env.example             # environment variables template (incl. EmailJS)
 ├── index.html               # SEO metadata + structured data
 ├── public/
 │   └── favicon.svg
@@ -213,7 +216,7 @@ Force HTTP → HTTPS by uncommenting the `return 301 https://...` line.
         ├── Research.tsx         # research / achievements / philosophy
         ├── Architecture.tsx     # scroll-animated stack layers
         ├── Deployment.tsx       # OpenStack deployment dashboard
-        ├── Contact.tsx          # contact details + mailto form
+        ├── Contact.tsx          # contact details + EmailJS form (mailto fallback)
         ├── Footer.tsx
         ├── icons.tsx            # GitHub/LinkedIn icons
         └── ui.tsx               # Section/Panel/Chip primitives
@@ -223,15 +226,43 @@ Force HTTP → HTTPS by uncommenting the `return 301 https://...` line.
 
 ## Environment Variables
 
-Only these are used (see `.env.example`):
+See `.env.example` for the full list:
 
 ```
-VITE_SITE_URL   # public URL baked into SEO metadata at build time
-HTTP_PORT       # host port for HTTP (default 80)
-HTTPS_PORT      # host port for HTTPS (default 443)
+VITE_SITE_URL            # public URL baked into SEO metadata at build time
+HTTP_PORT                # host port for HTTP (default 80)
+HTTPS_PORT               # host port for HTTPS (default 443)
+VITE_EMAILJS_SERVICE_ID  # optional — direct contact-form delivery
+VITE_EMAILJS_TEMPLATE_ID # optional
+VITE_EMAILJS_PUBLIC_KEY  # optional (public by design, safe in the browser)
 ```
 
-The contact form opens the user's mail client (`mailto:`) — **no secrets are exposed in the frontend**.
+### Contact form delivery (EmailJS)
+
+The contact form sends **directly from the frontend** to `janagi2368@gmail.com`
+via [EmailJS](https://www.emailjs.com) when configured. Setup:
+
+1. Create a free account at <https://dashboard.emailjs.com>.
+2. **Email Services** → add Gmail (connect `janagi2368@gmail.com`) → copy the **Service ID**.
+3. **Email Templates** → create a template with these variables:
+   ```
+   To:      janagi2368@gmail.com
+   From:    {{from_name}} <{{from_email}}>
+   Reply-To: {{reply_to}}
+   Subject: Portfolio contact — {{from_name}}
+   Body:
+     {{message}}
+     — {{from_name}} ({{from_email}})
+   ```
+   → copy the **Template ID**.
+4. **Account → General** → copy the **Public Key**.
+5. Put all three in `.env` (local) **and** as Actions variables/secrets
+   (repo **Settings → Secrets and variables → Actions → Variables**), then rebuild.
+
+The public key is intentionally public — EmailJS keys are designed to ship in
+browser code. Restrict the allowed domain to `janagiram.dpdns.org` in EmailJS
+settings. If the three values are empty, the form falls back to `mailto:` and
+**no secrets are ever exposed in the frontend**.
 
 ---
 

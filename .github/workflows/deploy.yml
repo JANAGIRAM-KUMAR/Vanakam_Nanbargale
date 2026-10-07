@@ -37,6 +37,12 @@ jobs:
         run: npm run build
         env:
           VITE_SITE_URL: https://janagiram.dpdns.org
+          # Optional: add these as repo Variables or Secrets (Settings →
+          # Secrets and variables → Actions) to enable direct form delivery.
+          # Empty → contact form falls back to mailto:.
+          VITE_EMAILJS_SERVICE_ID: ${{ vars.VITE_EMAILJS_SERVICE_ID || secrets.VITE_EMAILJS_SERVICE_ID }}
+          VITE_EMAILJS_TEMPLATE_ID: ${{ vars.VITE_EMAILJS_TEMPLATE_ID || secrets.VITE_EMAILJS_TEMPLATE_ID }}
+          VITE_EMAILJS_PUBLIC_KEY: ${{ vars.VITE_EMAILJS_PUBLIC_KEY || secrets.VITE_EMAILJS_PUBLIC_KEY }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

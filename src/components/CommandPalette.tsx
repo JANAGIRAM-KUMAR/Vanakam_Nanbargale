@@ -33,7 +33,7 @@ export function CommandPalette({ onClose }: { onClose: () => void }) {
       {
         id: 'linkedin',
         label: 'Open LinkedIn',
-        hint: 'linkedin.com/in/janagiram-kumar',
+        hint: 'linkedin.com/in/janagiram-kumar-1b918421a',
         icon: Linkedin,
         run: () => window.open(PROFILE.linkedin, '_blank', 'noopener'),
       },

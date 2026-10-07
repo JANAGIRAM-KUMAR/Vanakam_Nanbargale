@@ -8,7 +8,7 @@ export const PROFILE = {
     'Computer Science Engineer focused on AI agents, backend engineering, cloud infrastructure, DevOps, and computer networking.',
   email: 'janagi2368@gmail.com',
   github: 'https://github.com/JANAGIRAM-KUMAR',
-  linkedin: 'https://linkedin.com/in/janagiram-kumar',
+  linkedin: 'https://www.linkedin.com/in/janagiram-kumar-1b918421a/',
 } as const
 
 export const NAV_LINKS = [

@@ -1,9 +1,17 @@
+import emailjs from '@emailjs/browser'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Check, Copy, Mail, Send } from 'lucide-react'
+import { Check, CircleAlert, Copy, Loader2, Mail, Send } from 'lucide-react'
 import { GithubIcon as Github, LinkedinIcon as Linkedin } from './icons'
 import { type ComponentType, useState } from 'react'
 import { PROFILE } from '../data/content'
 import { Panel, Section } from './ui'
+
+const EMAILJS_SERVICE = import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined
+const EMAILJS_TEMPLATE = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined
+const EMAILJS_ENABLED = Boolean(EMAILJS_SERVICE && EMAILJS_TEMPLATE && EMAILJS_PUBLIC_KEY)
+
+type SendStatus = 'idle' | 'sending' | 'sent' | 'error' | 'mail-client'
 
 function ContactRow({
   icon: Icon,
@@ -62,16 +70,61 @@ export function Contact() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
-  const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState<SendStatus>('idle')
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const subject = encodeURIComponent(`Portfolio contact — ${name}`)
-    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`)
-    window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`
-    setSent(true)
-    setTimeout(() => setSent(false), 4000)
+
+    if (EMAILJS_ENABLED) {
+      setStatus('sending')
+      try {
+        await emailjs.send(
+          EMAILJS_SERVICE!,
+          EMAILJS_TEMPLATE!,
+          {
+            from_name: name,
+            from_email: email,
+            reply_to: email,
+            to_email: PROFILE.email,
+            message,
+          },
+          { publicKey: EMAILJS_PUBLIC_KEY! },
+        )
+        setStatus('sent')
+        setName('')
+        setEmail('')
+        setMessage('')
+      } catch (err) {
+        console.error('EmailJS send failed:', err)
+        setStatus('error')
+      }
+    } else {
+      // No EmailJS config yet — fall back to opening the visitor's mail client.
+      const subject = encodeURIComponent(`Portfolio contact — ${name}`)
+      const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`)
+      window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`
+      setStatus('mail-client')
+    }
+
+    setTimeout(() => setStatus('idle'), 6000)
   }
+
+  const statusLine: Record<SendStatus, { text: string; className: string }> = {
+    idle: {
+      text: EMAILJS_ENABLED
+        ? `Sends directly to ${PROFILE.email}.`
+        : 'Opens your mail client — no data leaves your browser.',
+      className: 'text-dim',
+    },
+    sending: { text: 'Sending message…', className: 'text-cyan' },
+    sent: { text: "Message sent — I'll get back to you soon.", className: 'text-term' },
+    error: { text: 'Send failed — please email me directly instead.', className: 'text-amber' },
+    'mail-client': {
+      text: 'Opened in mail client — no data leaves your browser.',
+      className: 'text-dim',
+    },
+  }
+  const line = statusLine[status]
 
   return (
     <Section
@@ -98,7 +151,7 @@ export function Contact() {
           <ContactRow
             icon={Linkedin}
             label="LINKEDIN"
-            value="linkedin.com/in/janagiram-kumar"
+            value="linkedin.com/in/janagiram-kumar-1b918421a"
             href={PROFILE.linkedin}
           />
 
@@ -161,11 +214,20 @@ export function Contact() {
               </div>
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center gap-2 rounded border border-cyan/60 bg-cyan/10 px-5 py-3 font-mono text-sm text-cyan transition-all hover:bg-cyan/20 hover:shadow-[0_0_24px_rgba(34,211,238,0.25)]"
+                disabled={status === 'sending'}
+                className="inline-flex w-full items-center justify-center gap-2 rounded border border-cyan/60 bg-cyan/10 px-5 py-3 font-mono text-sm text-cyan transition-all hover:bg-cyan/20 hover:shadow-[0_0_24px_rgba(34,211,238,0.25)] disabled:cursor-wait disabled:opacity-60"
               >
-                {sent ? (
+                {status === 'sending' ? (
                   <>
-                    <Check className="size-4" aria-hidden="true" /> Opened in mail client
+                    <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Sending…
+                  </>
+                ) : status === 'sent' ? (
+                  <>
+                    <Check className="size-4" aria-hidden="true" /> Message Sent
+                  </>
+                ) : status === 'error' ? (
+                  <>
+                    <CircleAlert className="size-4" aria-hidden="true" /> Try Again
                   </>
                 ) : (
                   <>
@@ -173,8 +235,12 @@ export function Contact() {
                   </>
                 )}
               </button>
-              <p className="text-center font-mono text-[10px] text-dim">
-                Opens your mail client — no data leaves your browser.
+              <p
+                className={`text-center font-mono text-[10px] ${line.className}`}
+                role="status"
+                aria-live="polite"
+              >
+                {line.text}
               </p>
             </form>
           </Panel>
