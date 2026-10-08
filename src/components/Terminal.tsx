@@ -194,10 +194,9 @@ export function Terminal() {
             spellCheck={false}
             autoComplete="off"
             aria-label="Terminal input"
-            className="w-full bg-transparent font-mono text-[12px] text-ink caret-transparent focus:outline-none sm:text-[13px]"
+            className="w-full bg-transparent font-mono text-[12px] text-ink caret-cyan focus:outline-none sm:text-[13px]"
             placeholder="type help…"
           />
-          <span className="caret -ml-2 inline-block h-3.5 w-2 bg-cyan" aria-hidden="true" />
         </form>
       </div>
 
