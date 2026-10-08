@@ -148,7 +148,7 @@ export function Contact() {
   return (
     <Section
       id="contact"
-      index="10"
+      index="09"
       label="Contact"
       title="Let's build something."
       intro="Interested in software engineering, AI systems, backend development, networking, or infrastructure? Let's connect."
@@ -174,7 +174,7 @@ export function Contact() {
             href={PROFILE.linkedin}
           />
 
-          <div className="mt-6 rounded-lg border border-edge bg-void/60 p-4 font-mono text-[11px] leading-relaxed text-dim">
+          <div className="mt-6 hidden rounded-lg border border-edge bg-void/60 p-4 font-mono text-[11px] leading-relaxed text-dim sm:block">
             <span className="text-term">$</span> echo &quot;open to software, AI, networking, and
             infrastructure roles&quot;
             <br />

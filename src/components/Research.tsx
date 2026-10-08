@@ -64,7 +64,7 @@ export function Achievements() {
           </div>
         </Panel>
 
-        <Panel className="p-6">
+        <Panel className="hidden p-6 lg:block">
           <div className="flex items-center justify-between font-mono text-[11px] tracking-[0.2em] text-dim">
             <span>BUILD ACTIVITY</span>
             <span className="text-term">● continuous</span>

@@ -170,7 +170,7 @@ export function Terminal() {
 
       <div
         ref={scrollRef}
-        className="terminal-scroll h-64 cursor-text overflow-y-auto px-4 py-3 font-mono text-[12px] leading-relaxed sm:text-[13px]"
+        className="terminal-scroll h-48 cursor-text overflow-y-auto px-4 py-3 font-mono text-[12px] leading-relaxed sm:h-64 sm:text-[13px]"
         onClick={() => inputRef.current?.focus()}
         role="log"
         aria-live="polite"

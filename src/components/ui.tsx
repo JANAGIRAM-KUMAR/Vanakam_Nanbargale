@@ -20,13 +20,13 @@ export function Section({
 }) {
   const reduce = useReducedMotion()
   return (
-    <section id={id} className={`relative mx-auto w-full max-w-6xl px-5 py-20 sm:px-8 ${className}`}>
+    <section id={id} className={`relative mx-auto w-full max-w-6xl px-5 py-14 sm:px-8 sm:py-20 ${className}`}>
       <motion.header
         initial={reduce ? false : { opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="mb-10"
+        className="mb-7 sm:mb-10"
       >
         <div className="flex items-center gap-3 font-mono text-xs tracking-[0.2em] text-dim">
           <span className="text-cyan">{index}</span>

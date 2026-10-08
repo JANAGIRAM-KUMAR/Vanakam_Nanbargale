@@ -122,7 +122,7 @@ export function Experience() {
           </div>
         </div>
 
-        <div className="lg:sticky lg:top-24">
+        <div className="hidden lg:sticky lg:top-24 lg:block">
           <LabDiagram />
         </div>
       </div>

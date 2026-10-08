@@ -148,7 +148,7 @@ function ProjectPanel({ project, index }: { project: Project; index: number }) {
           aria-hidden="true"
         />
 
-        <div className="flex items-center gap-3 border-b border-edge px-6 py-3.5 sm:px-7">
+        <div className="flex items-center gap-3 border-b border-edge px-5 py-3.5 sm:px-7">
           <span
             className={`flex size-7 items-center justify-center rounded border ${
               isBackend ? 'border-cyan/50 bg-cyan/10 text-cyan' : 'border-amber/50 bg-amber/10 text-amber'
@@ -176,7 +176,7 @@ function ProjectPanel({ project, index }: { project: Project; index: number }) {
           </a>
         </div>
 
-        <div className="grid gap-6 p-6 sm:p-7 lg:grid-cols-[1.3fr_1fr]">
+        <div className="grid gap-5 p-5 sm:gap-6 sm:p-7 lg:grid-cols-[1.3fr_1fr]">
           <div>
             <h3 className="text-xl font-semibold text-ink sm:text-2xl">{project.name}</h3>
             <p className={`mt-1.5 font-mono text-xs leading-relaxed ${accent}`}>{project.tagline}</p>
@@ -185,8 +185,11 @@ function ProjectPanel({ project, index }: { project: Project; index: number }) {
             <div className="mt-5">
               <div className="mb-2 font-mono text-[10px] tracking-[0.2em] text-dim">HIGHLIGHTS</div>
               <ul className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
-                {project.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-[13px] text-muted">
+                {project.features.map((f, i) => (
+                  <li
+                    key={f}
+                    className={`${i >= 4 ? 'hidden sm:flex' : 'flex'} items-start gap-2 text-[13px] text-muted`}
+                  >
                     <span
                       className={`mt-1.5 size-1 shrink-0 rounded-full ${isBackend ? 'bg-cyan' : 'bg-amber'}`}
                       aria-hidden="true"
@@ -197,14 +200,20 @@ function ProjectPanel({ project, index }: { project: Project; index: number }) {
               </ul>
             </div>
 
-            <div className="mt-5 flex flex-wrap gap-1.5">
+            <div className="mt-5 flex flex-wrap gap-1.5 [&>span:nth-child(n+6)]:hidden sm:[&>span:nth-child(n+6)]:inline">
               {project.stack.map((s) => (
                 <Chip key={s}>{s}</Chip>
               ))}
             </div>
+
+            {isMusic && (
+              <div className="sm:hidden">
+                <Equalizer />
+              </div>
+            )}
           </div>
 
-          <div>
+          <div className="hidden sm:block">
             <ServicesArch services={project.services} label={ARCH_LABEL[project.arch]} />
             <Signals items={project.signals} />
             {isMusic && <Equalizer />}
