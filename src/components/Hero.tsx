@@ -3,7 +3,6 @@ import { ArrowDown, Mail } from 'lucide-react'
 import { GithubIcon as Github, LinkedinIcon as Linkedin } from './icons'
 import { PROFILE } from '../data/content'
 import { Terminal } from './Terminal'
-import { Topology } from './Topology'
 
 const TAGS = ['SOFTWARE ENGINEER', 'AI', 'NETWORKING', 'DEVOPS']
 
@@ -105,14 +104,7 @@ export function Hero() {
           className="space-y-6"
         >
           <Terminal />
-          <div className="hidden lg:block">
-            <Topology />
-          </div>
         </motion.div>
-      </div>
-
-      <div className="relative mx-auto mt-12 max-w-6xl px-5 sm:px-8 lg:hidden">
-        <Topology />
       </div>
 
       <div className="relative mx-auto mt-14 flex max-w-6xl items-center gap-3 px-5 font-mono text-[10px] tracking-[0.2em] text-dim sm:px-8">

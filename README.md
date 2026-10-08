@@ -208,7 +208,6 @@ Force HTTP → HTTPS by uncommenting the `return 301 https://...` line.
         ├── CommandPalette.tsx   # ⌘K palette
         ├── Hero.tsx             # hero section
         ├── Terminal.tsx         # interactive terminal + easter egg
-        ├── Topology.tsx         # animated network topology
         ├── About.tsx
         ├── Experience.tsx       # Ciena timeline + lab diagram
         ├── Skills.tsx           # expandable stack categories
