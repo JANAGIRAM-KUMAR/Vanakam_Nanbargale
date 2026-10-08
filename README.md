@@ -107,8 +107,8 @@ nano .env
 | Variable       | Description                          | Example                     |
 | -------------- | ------------------------------------ | --------------------------- |
 | `VITE_SITE_URL`| Public URL used for SEO metadata     | `https://janagiram.dpdns.org`     |
-| `HTTP_PORT`    | Host port mapped to container :80    | `80`                        |
-| `HTTPS_PORT`   | Host port mapped to container :443   | `443`                       |
+| `HTTP_PORT`    | Host port mapped to container :8080   | `80`                        |
+| `HTTPS_PORT`   | Host port mapped to container :8443   | `443`                       |
 | `VITE_EMAILJS_SERVICE_ID`  | EmailJS service id (optional — enables direct form delivery) | `service_xxxxxxx` |
 | `VITE_EMAILJS_TEMPLATE_ID` | EmailJS template id (optional)      | `template_xxxxxxx`          |
 | `VITE_EMAILJS_PUBLIC_KEY`  | EmailJS public key (optional, browser-safe) | `AbCdEf123456`     |
@@ -229,8 +229,8 @@ See `.env.example` for the full list:
 
 ```
 VITE_SITE_URL            # public URL baked into SEO metadata at build time
-HTTP_PORT                # host port for HTTP (default 80)
-HTTPS_PORT               # host port for HTTPS (default 443)
+HTTP_PORT                # host port mapped to container :8080 (default 80)
+HTTPS_PORT               # host port mapped to container :8443 (default 443)
 VITE_EMAILJS_SERVICE_ID  # optional — direct contact-form delivery
 VITE_EMAILJS_TEMPLATE_ID # optional
 VITE_EMAILJS_PUBLIC_KEY  # optional (public by design, safe in the browser)
@@ -272,6 +272,29 @@ domain to `janagiram.dpdns.org` in EmailJS settings.
 - System font stack (zero font downloads)
 - CSS-driven animations with `prefers-reduced-motion` support
 - Semantic HTML, skip link, ARIA labels, visible focus states
+
+---
+
+## Security Notes
+
+**Frontend (deployed everywhere)**
+- No `dangerouslySetInnerHTML`, `eval`, or unsafe DOM writes; all form input is
+  text-only, trimmed, and length-capped (100/254/2000) before being sent.
+- CSP meta tag injected into the production build (`connect-src` allows only
+  same-origin + `https://api.emailjs.com`), plus `referrer` policy in the page.
+- No secrets in the bundle: EmailJS service/template/public-key IDs are public
+  by design (they ship in every browser request) and only `VITE_*` env vars
+  are ever exposed to clients.
+- `/.well-known/security.txt` and `/robots.txt` are served at the site root.
+
+**Docker/nginx deployment**
+- Containers run as an unprivileged user with `read_only` root fs, `tmpfs`
+  scratch, `cap_drop: ALL`, `no-new-privileges`, `init`, and resource limits.
+- nginx sends `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`,
+  `Referrer-Policy`, `Permissions-Policy`, blocks dotfiles, and rate-limits
+  per-IP; only `GET`/`HEAD` are accepted on the origin.
+- GitHub Actions steps are pinned to commit SHAs; the workflow uses the
+  least-permission `pages`/`id-token` token pair and builds from the lockfile.
 
 ---
 

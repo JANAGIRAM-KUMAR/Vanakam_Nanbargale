@@ -7,9 +7,23 @@ services:
     image: janagiram-portfolio:latest
     container_name: portfolio
     restart: unless-stopped
+
+    # --- Security hardening ---
+    init: true                       # reap zombie processes; no extra entrypoint
+    read_only: true                  # root filesystem is read-only
+    tmpfs:
+      - /tmp:size=64m,mode=1777      # writable scratch (pid files, etc.)
+      - /var/cache/nginx:size=64m    # nginx runtime cache
+    security_opt:
+      - no-new-privileges:true       # processes cannot gain privileges
+    cap_drop:
+      - ALL                          # no capabilities beyond the image's default
+    mem_limit: 256m
+    cpus: 0.5
+
     ports:
-      - "${HTTP_PORT:-80}:80"
-      - "${HTTPS_PORT:-443}:443"
+      - "${HTTP_PORT:-80}:8080"
+      - "${HTTPS_PORT:-443}:8443"
     environment:
       - VITE_SITE_URL=${VITE_SITE_URL:-https://janagiram.dpdns.org}
     # Mount TLS material only if you terminate HTTPS in this container
@@ -17,7 +31,7 @@ services:
     # volumes:
     #   - ./certs:/etc/nginx/certs:ro
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://localhost/healthz"]
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/healthz"]
       interval: 30s
       timeout: 5s
       retries: 3

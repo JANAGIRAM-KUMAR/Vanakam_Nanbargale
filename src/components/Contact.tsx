@@ -82,6 +82,18 @@ export function Contact() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    // Normalize + enforce sane bounds so the EmailJS quota and the visitor's
+    // mail client are never abused with junk or oversized payloads.
+    const cleanName = name.trim().slice(0, 100)
+    const cleanEmail = email.trim().slice(0, 254)
+    const cleanMessage = message.trim().slice(0, 2000)
+
+    if (!cleanName || !cleanEmail || !cleanMessage) {
+      setStatus('error')
+      setTimeout(() => setStatus('idle'), 4000)
+      return
+    }
+
     if (EMAILJS_ENABLED) {
       setStatus('sending')
       try {
@@ -90,9 +102,9 @@ export function Contact() {
           EMAILJS_TEMPLATE!,
           {
             // Matches the configured template variables.
-            name,
-            email,
-            message,
+            name: cleanName,
+            email: cleanEmail,
+            message: cleanMessage,
             to_email: PROFILE.email,
           },
           { publicKey: EMAILJS_PUBLIC_KEY! },
@@ -107,8 +119,8 @@ export function Contact() {
       }
     } else {
       // No EmailJS config yet — fall back to opening the visitor's mail client.
-      const subject = encodeURIComponent(`Portfolio contact — ${name}`)
-      const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`)
+      const subject = encodeURIComponent(`Portfolio contact — ${cleanName}`)
+      const body = encodeURIComponent(`${cleanMessage}\n\n— ${cleanName} (${cleanEmail})`)
       window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`
       setStatus('mail-client')
     }
@@ -185,6 +197,7 @@ export function Contact() {
                 <input
                   id="c-name"
                   required
+                  maxLength={100}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full rounded border border-edge bg-void/70 px-3 py-2.5 text-sm text-ink placeholder:text-dim focus:border-cyan/60 focus:outline-none"
@@ -199,6 +212,7 @@ export function Contact() {
                   id="c-email"
                   type="email"
                   required
+                  maxLength={254}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full rounded border border-edge bg-void/70 px-3 py-2.5 text-sm text-ink placeholder:text-dim focus:border-cyan/60 focus:outline-none"
@@ -213,6 +227,7 @@ export function Contact() {
                   id="c-msg"
                   required
                   rows={4}
+                  maxLength={2000}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   className="w-full resize-y rounded border border-edge bg-void/70 px-3 py-2.5 text-sm text-ink placeholder:text-dim focus:border-cyan/60 focus:outline-none"
