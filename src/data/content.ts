@@ -104,113 +104,133 @@ export const SKILLS: SkillCategory[] = [
   },
 ]
 
+export type ServiceNode = {
+  name: string
+  note: string
+  layer: 'edge' | 'core' | 'data'
+}
+
+export type ProjectSignal = { label: string; value: string }
+
 export type Project = {
   id: string
   name: string
-  kind: 'backend' | 'fullstack' | 'frontend'
+  kind: 'backend' | 'fullstack'
+  arch: 'microservices' | 'api' | 'fullstack'
+  icon: 'layers' | 'server' | 'music'
+  repo: string
   tagline: string
   description: string
   stack: string[]
   features: string[]
-  flow: string[]
+  signals: ProjectSignal[]
+  services: ServiceNode[]
 }
 
 export const PROJECTS: Project[] = [
   {
-    id: 'task-management',
-    name: 'Task Management System',
+    id: 'microservices-workflow',
+    name: 'Microservices Task Platform',
     kind: 'backend',
-    tagline: 'Production-style task platform with queues, caching, and role-based access.',
+    arch: 'microservices',
+    icon: 'layers',
+    repo: 'JANAGIRAM-KUMAR/microservices-workflow',
+    tagline: 'Five services, one gateway, Kafka events, and a pipeline that ships on merge.',
     description:
-      'A full backend system for managing tasks with JWT and Google OAuth authentication, role-based access control, Redis caching, and BullMQ background job processing.',
-    stack: [
-      'Node.js',
-      'TypeScript',
-      'Express.js',
-      'PostgreSQL',
-      'Redis',
-      'BullMQ',
-      'Docker Compose',
-      'Cloudinary',
-    ],
+      'An npm-workspaces monorepo where an API gateway (auth, rate limiting, routing) fronts auth, task, media, and workflow services over HTTP and Kafka. A shared package holds JWT, Kafka, logging, and error contracts; PostgreSQL and S3-backed uploads persist the data.',
+    stack: ['TypeScript', 'Express', 'PostgreSQL', 'Apache Kafka', 'S3', 'Docker', 'Vitest'],
     features: [
-      'RESTful API with task CRUD',
-      'JWT authentication + Google OAuth',
-      'Role-based access control',
-      'PostgreSQL indexing',
-      'Redis caching and rate limiting',
-      'Pub/Sub and BullMQ background jobs',
-      'Cloudinary uploads',
-      'Structured logging',
-      'Docker Compose setup',
+      'Gateway enforces JWT, rate limits, and service-to-service auth',
+      'Kafka event flow: task.created drives the workflow service',
+      'Shared package for JWT, Kafka client, logger, typed errors',
+      'Media service issues presigned S3 upload URLs',
+      'Typecheck + tests on every PR, Docker Hub image on merge',
+      'Docker Compose runs Kafka and all five services locally',
     ],
-    flow: [
-      'Frontend',
-      'API',
-      'Auth / RBAC',
-      'PostgreSQL + Redis',
-      'BullMQ Workers',
-      'Cloudinary',
+    signals: [
+      { label: 'SERVICES', value: '5 · ports 5009–5013' },
+      { label: 'TEST FILES', value: '35 (Vitest + Supertest)' },
+      { label: 'WORKFLOWS', value: 'ci.yml · cd.yml' },
+      { label: 'RUNTIME', value: 'Node 22 + TS (tsx)' },
+    ],
+    services: [
+      { name: 'API GATEWAY', note: 'routing · auth · rate-limit', layer: 'edge' },
+      { name: 'AUTH', note: 'JWT issue/verify', layer: 'core' },
+      { name: 'TASK', note: 'CRUD · emits events', layer: 'core' },
+      { name: 'MEDIA', note: 'presigned S3', layer: 'core' },
+      { name: 'WORKFLOW', note: 'Kafka consumer', layer: 'core' },
+      { name: 'POSTGRESQL', note: 'Neon', layer: 'data' },
+      { name: 'KAFKA', note: 'topics', layer: 'data' },
+      { name: 'S3 STORAGE', note: 'attachments', layer: 'data' },
     ],
   },
   {
     id: 'acquisitions-api',
     name: 'Acquisitions API',
     kind: 'backend',
-    tagline:
-      'Secure backend API engineered with containerization, automated testing, CI/CD, and security middleware.',
+    arch: 'api',
+    icon: 'server',
+    repo: 'JANAGIRAM-KUMAR/acquisitions',
+    tagline: 'Hardened REST API: validated input, role-based routes, tested and containerized.',
     description:
-      'A hardened REST API with schema validation, containerized delivery, and an automated pipeline from commit to deployment artifact.',
-    stack: [
-      'Node.js',
-      'Express.js',
-      'PostgreSQL',
-      'Docker',
-      'GitHub Actions',
-      'JWT',
-      'RBAC',
-      'Zod',
-      'Drizzle ORM',
-      'Jest',
-      'Supertest',
-    ],
+      'Express 5 (ESM) split into routes, controllers, services, and models — Zod-validated at the edge, Drizzle migrations against Neon Postgres, JWT in http-only cookies, and Arcjet, Helmet, and Winston guarding and logging every request.',
+    stack: ['Node.js', 'Express 5', 'Drizzle ORM', 'PostgreSQL', 'Zod', 'JWT', 'Docker', 'Jest'],
     features: [
-      'Schema validation with Zod',
-      'JWT + RBAC security middleware',
-      'Drizzle ORM data layer',
-      'Jest + Supertest test suite',
-      'GitHub Actions CI/CD',
-      'Containerized with Docker',
+      'Layered layout: routes → controllers → services → models',
+      'Zod schema validation on every request body',
+      'JWT in http-only cookies with role-based access control',
+      'Drizzle Kit migrations and a committed coverage report',
+      'Arcjet, Helmet, CORS, and structured Winston logs',
+      'Actions: tests, lint/format, and a Docker image to Docker Hub',
     ],
-    flow: [
-      'Developer',
-      'GitHub',
-      'GitHub Actions',
-      'Tests',
-      'Docker',
-      'Application',
-      'PostgreSQL',
+    signals: [
+      { label: 'WORKFLOWS', value: 'tests · lint · docker' },
+      { label: 'TESTING', value: 'Jest + Supertest' },
+      { label: 'DATABASE', value: 'Drizzle + Neon (pg)' },
+      { label: 'SECURITY', value: 'Arcjet · Helmet · RBAC' },
+    ],
+    services: [
+      { name: 'HTTP CLIENT', note: 'cookie · bearer', layer: 'edge' },
+      { name: 'AUTH / RBAC', note: 'jwt + requireRole', layer: 'core' },
+      { name: 'VALIDATION', note: 'zod schemas', layer: 'core' },
+      { name: 'REST API', note: 'express 5 routes', layer: 'core' },
+      { name: 'DATA LAYER', note: 'drizzle orm', layer: 'core' },
+      { name: 'POSTGRESQL', note: 'neon', layer: 'data' },
     ],
   },
   {
     id: 'music-manager',
-    name: 'Music Manager',
-    kind: 'frontend',
-    tagline: 'Spotify-inspired music manager with centralized playback and smart queues.',
+    name: 'MusicManager',
+    kind: 'fullstack',
+    arch: 'fullstack',
+    icon: 'music',
+    repo: 'JANAGIRAM-KUMAR/MusicManager',
+    tagline: 'Spotify-style client and API: one playback store, a real admin dashboard, live updates.',
     description:
-      'A responsive music application with a centralized playback store, playlist queue management, and multimedia uploads on Cloudinary.',
-    stack: ['React', 'TypeScript', 'Node.js', 'MongoDB', 'Zustand', 'Cloudinary'],
+      'React 19 and Vite on the front, Express and Mongoose behind it. Zustand owns playback, library, and auth state; Clerk signs users in on both client and server; Cloudinary stores media streamed through Socket.IO.',
+    stack: ['React 19', 'TypeScript', 'Vite', 'Zustand', 'Express', 'MongoDB', 'Cloudinary', 'Clerk'],
     features: [
-      'Spotify-inspired interface',
-      'Centralized playback state with Zustand',
-      'Responsive audio controls',
-      'Playlist queue management',
-      'Clerk-based RBAC',
-      'Cloudinary multimedia uploads',
-      'MongoDB aggregation pipelines',
-      'Concurrent query handling',
+      'Spotify-style UI: resizable panels, player, album pages',
+      'Playback queue, seek, and controls held in Zustand',
+      'Admin dashboard for stats plus song and album CRUD',
+      'Clerk auth on the client and @clerk/express on the server',
+      'Real-time events over Socket.IO, cron jobs via node-cron',
+      'Seeded MongoDB catalog behind Mongoose models',
     ],
-    flow: ['React Client', 'Zustand Store', 'Node API', 'MongoDB', 'Cloudinary'],
+    signals: [
+      { label: 'WORKSPACE', value: 'client + server' },
+      { label: 'STATE', value: '3 Zustand stores' },
+      { label: 'AUTH', value: 'Clerk (web + express)' },
+      { label: 'MEDIA', value: 'Cloudinary uploads' },
+    ],
+    services: [
+      { name: 'REACT CLIENT', note: 'Vite · Tailwind 4', layer: 'edge' },
+      { name: 'ZUSTAND STORE', note: 'player · music · auth', layer: 'core' },
+      { name: 'EXPRESS API', note: 'routes + controllers', layer: 'core' },
+      { name: 'CLERK AUTH', note: 'session → jwt', layer: 'core' },
+      { name: 'MONGODB', note: 'mongoose models', layer: 'data' },
+      { name: 'CLOUDINARY', note: 'audio + covers', layer: 'data' },
+    ],
   },
 ]
 

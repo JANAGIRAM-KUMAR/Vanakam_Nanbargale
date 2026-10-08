@@ -38,7 +38,7 @@ const INFO: Record<string, Line[]> = {
     { text: '  Routing topologies on real lab hardware · device management tool' },
   ],
   projects: [
-    { text: '1. Task Management System  — Node · TS · PostgreSQL · Redis · BullMQ' },
+    { text: '1. Task Management System  — 5 microservices · Node · TS · Kafka · PostgreSQL' },
     { text: '2. Acquisitions API        — Node · Docker · CI/CD · Jest · Drizzle' },
     { text: '3. Music Manager           — React · TypeScript · MongoDB · Zustand' },
   ],
