@@ -215,7 +215,6 @@ Force HTTP → HTTPS by uncommenting the `return 301 https://...` line.
         ├── Projects.tsx         # large project panels + architecture flows
         ├── Research.tsx         # research / achievements / philosophy
         ├── Architecture.tsx     # scroll-animated stack layers
-        ├── Deployment.tsx       # OpenStack deployment dashboard
         ├── Contact.tsx          # contact details + EmailJS form (mailto fallback)
         ├── Footer.tsx
         ├── icons.tsx            # GitHub/LinkedIn icons

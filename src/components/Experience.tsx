@@ -9,7 +9,7 @@ function LabDiagram() {
   return (
     <Panel className="overflow-hidden p-5">
       <div className="mb-4 flex items-center justify-between font-mono text-[11px] tracking-[0.2em] text-dim">
-        <span>OTTAWA LAB</span>
+        <span>ROUTING LAB</span>
         <span className="text-term">● LIVE</span>
       </div>
 
@@ -32,7 +32,7 @@ function LabDiagram() {
         <span className="h-px flex-1 bg-edge" aria-hidden="true" />
       </div>
 
-      <svg viewBox="0 0 320 96" className="w-full" role="img" aria-label="Six network topologies across twenty-four devices">
+      <svg viewBox="0 0 320 96" className="w-full" role="img" aria-label="Switch topologies across a fleet of lab devices">
         {[0, 1, 2, 3, 4, 5].map((t) => {
           const x = 26 + t * 51
           return (
@@ -51,17 +51,6 @@ function LabDiagram() {
           )
         })}
       </svg>
-
-      <div className="mt-3 grid grid-cols-2 gap-3 border-t border-edge pt-4 font-mono text-[11px]">
-        <div>
-          <div className="text-2xl font-semibold text-cyan">6</div>
-          <div className="text-dim">TOPOLOGIES</div>
-        </div>
-        <div>
-          <div className="text-2xl font-semibold text-term">24</div>
-          <div className="text-dim">DEVICES</div>
-        </div>
-      </div>
     </Panel>
   )
 }

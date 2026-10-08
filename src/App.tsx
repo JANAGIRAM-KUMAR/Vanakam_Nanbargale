@@ -4,7 +4,7 @@ import { About } from './components/About'
 import { Architecture } from './components/Architecture'
 import { CommandPalette } from './components/CommandPalette'
 import { Contact } from './components/Contact'
-import { Deployment } from './components/Deployment'
+
 import { Experience } from './components/Experience'
 import { Footer } from './components/Footer'
 import { Hero } from './components/Hero'
@@ -42,7 +42,6 @@ export default function App() {
         <Achievements />
         <Philosophy />
         <Architecture />
-        <Deployment />
         <Contact />
       </main>
 

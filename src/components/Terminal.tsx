@@ -35,7 +35,7 @@ const INFO: Record<string, Line[]> = {
   experience: [
     { text: 'CIENA — Summer Intern, SVT/PV Routing IP (Jun 2026 – Aug 2026)', tone: 'green' },
     { text: '  AI agents with Google ADK · Service Delivery Switches' },
-    { text: '  6 network topologies · 24 devices · Ottawa Lab tool' },
+    { text: '  Routing topologies on real lab hardware · device management tool' },
   ],
   projects: [
     { text: '1. Task Management System  — Node · TS · PostgreSQL · Redis · BullMQ' },

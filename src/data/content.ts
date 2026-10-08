@@ -39,8 +39,8 @@ export const EXPERIENCE = [
       'Developed AI agents from scratch using Google Agent Development Kit (ADK).',
       'Worked with Ciena Service Delivery Switches across multiple models.',
       'Performed device configuration, IP addressing, DHCP setup, connectivity validation, and network protocol testing.',
-      'Designed and implemented 6 network topologies involving 24 devices in the Ottawa lab.',
-      'Built an Ottawa Lab device management tool.',
+      'Designed and validated routing topologies across multiple switch models in a hands-on lab environment.',
+      'Built a device management tool to streamline device configuration and inventory tracking.',
       'Collaborated with the SVT/PV Routing IP team to reproduce issues, troubleshoot failures, and validate fixes.',
     ],
   },
@@ -258,23 +258,6 @@ export const STACK_LAYERS = [
     accent: 'blue' as const,
   },
 ]
-
-export const DEPLOY_FLOW = [
-  'Local Development',
-  'GitHub',
-  'Docker Image',
-  'OpenStack VM',
-  'Nginx',
-  'Portfolio',
-]
-
-export const DEPLOY_STATUS = [
-  { k: 'OS', v: 'Ubuntu' },
-  { k: 'Runtime', v: 'Docker' },
-  { k: 'Proxy', v: 'Nginx' },
-  { k: 'Network', v: 'OpenStack' },
-  { k: 'Status', v: 'HEALTHY' },
-] as const
 
 export const TERMINAL_BOOT = [
   '$ whoami',
