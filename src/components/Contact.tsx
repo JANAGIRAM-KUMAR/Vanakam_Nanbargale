@@ -2,14 +2,10 @@ import emailjs from '@emailjs/browser'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Check, CircleAlert, Copy, Loader2, Mail, Send } from 'lucide-react'
 import { GithubIcon as Github, LinkedinIcon as Linkedin } from './icons'
-import { type ComponentType, useState } from 'react'
+import { type ComponentType, type FormEvent, useState } from 'react'
 import { PROFILE } from '../data/content'
 import { Panel, Section } from './ui'
 
-// EmailJS identifiers are public by design (they ship with every browser
-// request). Configurable via env (VITE_EMAILJS_*) with baked-in defaults.
-// The PUBLIC_KEY is required by the EmailJS browser SDK — without it the
-// form falls back to mailto:.
 const EMAILJS_SERVICE =
   (import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined) || 'service_g4o2ec5'
 const EMAILJS_TEMPLATE =
@@ -45,17 +41,15 @@ function ContactRow({
   }
 
   return (
-    <div className="flex items-center gap-3 border-b border-edge py-4 last:border-0">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded border border-edge-bright bg-void text-cyan">
-        <Icon className="size-4" aria-hidden="true" />
-      </span>
+    <div className="flex min-w-0 items-center gap-3 border-b border-white/[0.08] py-3 last:border-0 sm:py-3.5">
+      <Icon className="size-4 shrink-0 text-sage" aria-hidden="true" />
       <div className="min-w-0 flex-1">
-        <div className="font-mono text-[10px] tracking-[0.2em] text-dim">{label}</div>
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dim">{label}</p>
         <a
           href={href}
           target={isExternal ? '_blank' : undefined}
           rel="noreferrer noopener"
-          className="block truncate text-sm text-ink transition-colors hover:text-cyan"
+          className="mt-1 block truncate py-1 text-sm text-ink transition-colors hover:text-sage"
         >
           {value}
         </a>
@@ -63,10 +57,10 @@ function ContactRow({
       <button
         type="button"
         onClick={copy}
-        className="rounded border border-edge-bright p-2 text-dim transition-colors hover:border-cyan/50 hover:text-cyan"
+        className="rounded-lg p-2.5 text-dim transition-colors hover:text-ink"
         aria-label={`Copy ${label}`}
       >
-        {copied ? <Check className="size-3.5 text-term" /> : <Copy className="size-3.5" />}
+        {copied ? <Check className="size-4 text-term" /> : <Copy className="size-4" />}
       </button>
     </div>
   )
@@ -79,11 +73,9 @@ export function Contact() {
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<SendStatus>('idle')
 
-  const submit = async (e: React.FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault()
 
-    // Normalize + enforce sane bounds so the EmailJS quota and the visitor's
-    // mail client are never abused with junk or oversized payloads.
     const cleanName = name.trim().slice(0, 100)
     const cleanEmail = email.trim().slice(0, 254)
     const cleanMessage = message.trim().slice(0, 2000)
@@ -101,7 +93,6 @@ export function Contact() {
           EMAILJS_SERVICE!,
           EMAILJS_TEMPLATE!,
           {
-            // Matches the configured template variables.
             name: cleanName,
             email: cleanEmail,
             message: cleanMessage,
@@ -118,7 +109,6 @@ export function Contact() {
         setStatus('error')
       }
     } else {
-      // No EmailJS config yet — fall back to opening the visitor's mail client.
       const subject = encodeURIComponent(`Portfolio contact — ${cleanName}`)
       const body = encodeURIComponent(`${cleanMessage}\n\n— ${cleanName} (${cleanEmail})`)
       window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`
@@ -135,7 +125,7 @@ export function Contact() {
         : 'Opens your mail client — no data leaves your browser.',
       className: 'text-dim',
     },
-    sending: { text: 'Sending message…', className: 'text-cyan' },
+    sending: { text: 'Sending message…', className: 'text-sage' },
     sent: { text: "Message sent — I'll get back to you soon.", className: 'text-term' },
     error: { text: 'Send failed — please email me directly instead.', className: 'text-amber' },
     'mail-client': {
@@ -148,80 +138,83 @@ export function Contact() {
   return (
     <Section
       id="contact"
-      index="10"
-      label="Contact"
-      title="Let's build something."
-      intro="Interested in software engineering, AI systems, backend development, networking, or infrastructure? Let's connect."
+      index="05"
+      title="Contact"
+      intro="The fastest way to reach me."
     >
-      <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5 }}
-        >
-          <ContactRow icon={Mail} label="EMAIL" value={PROFILE.email} href={`mailto:${PROFILE.email}`} />
-          <ContactRow
-            icon={Github}
-            label="GITHUB"
-            value="github.com/JANAGIRAM-KUMAR"
-            href={PROFILE.github}
-          />
-          <ContactRow
-            icon={Linkedin}
-            label="LINKEDIN"
-            value="linkedin.com/in/janagiram-kumar-1b918421a"
-            href={PROFILE.linkedin}
-          />
+      <motion.div
+        initial={reduce ? false : { opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.45 }}
+      >
+        <Panel className="p-5 sm:p-8">
+          <div className="grid min-w-0 gap-8 md:grid-cols-[0.9fr_1.1fr] md:gap-10">
+            <div className="min-w-0">
+              <h3 className="font-display text-xl leading-none text-ink sm:text-2xl">Say hello.</h3>
+              <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">
+                Open to thoughtful conversations about software, AI, and infrastructure.
+              </p>
 
-          <div className="mt-6 rounded-lg border border-edge bg-void/60 p-4 font-mono text-[11px] leading-relaxed text-dim">
-            <span className="text-term">$</span> echo &quot;open to software, AI, networking, and
-            infrastructure roles&quot;
-            <br />
-            <span className="text-cyan">→ reply via email for the fastest response</span>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <Panel className="p-6">
-            <form onSubmit={submit} className="space-y-4">
-              <div>
-                <label htmlFor="c-name" className="mb-1.5 block font-mono text-[10px] tracking-[0.2em] text-dim">
-                  NAME
-                </label>
-                <input
-                  id="c-name"
-                  required
-                  maxLength={100}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded border border-edge bg-void/70 px-3 py-2.5 text-sm text-ink placeholder:text-dim focus:border-cyan/60 focus:outline-none"
-                  placeholder="Your name"
+              <div className="mt-5 sm:mt-6">
+                <ContactRow
+                  icon={Mail}
+                  label="Email"
+                  value={PROFILE.email}
+                  href={`mailto:${PROFILE.email}`}
+                />
+                <ContactRow
+                  icon={Github}
+                  label="GitHub"
+                  value="github.com/JANAGIRAM-KUMAR"
+                  href={PROFILE.github}
+                />
+                <ContactRow
+                  icon={Linkedin}
+                  label="LinkedIn"
+                  value="linkedin.com/in/janagiram-kumar-1b918421a"
+                  href={PROFILE.linkedin}
                 />
               </div>
-              <div>
-                <label htmlFor="c-email" className="mb-1.5 block font-mono text-[10px] tracking-[0.2em] text-dim">
-                  EMAIL
-                </label>
-                <input
-                  id="c-email"
-                  type="email"
-                  required
-                  maxLength={254}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded border border-edge bg-void/70 px-3 py-2.5 text-sm text-ink placeholder:text-dim focus:border-cyan/60 focus:outline-none"
-                  placeholder="you@company.com"
-                />
+            </div>
+
+            <form onSubmit={submit} className="min-w-0 space-y-4">
+              <div className="grid min-w-0 gap-4 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+                <div className="min-w-0">
+                  <label htmlFor="c-name" className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-dim">
+                    Name
+                  </label>
+                  <input
+                    id="c-name"
+                    required
+                    maxLength={100}
+                    autoComplete="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full rounded-lg border border-white/[0.08] bg-white/[0.025] px-3.5 py-2.5 text-sm text-ink placeholder:text-dim backdrop-blur-md transition-colors focus:border-sage/50 focus:bg-white/[0.05] focus:outline-none"
+                    placeholder="Your name"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <label htmlFor="c-email" className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-dim">
+                    Email
+                  </label>
+                  <input
+                    id="c-email"
+                    type="email"
+                    required
+                    maxLength={254}
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full rounded-lg border border-white/[0.08] bg-white/[0.025] px-3.5 py-2.5 text-sm text-ink placeholder:text-dim backdrop-blur-md transition-colors focus:border-sage/50 focus:bg-white/[0.05] focus:outline-none"
+                    placeholder="you@company.com"
+                  />
+                </div>
               </div>
-              <div>
-                <label htmlFor="c-msg" className="mb-1.5 block font-mono text-[10px] tracking-[0.2em] text-dim">
-                  MESSAGE
+              <div className="min-w-0">
+                <label htmlFor="c-msg" className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-dim">
+                  Message
                 </label>
                 <textarea
                   id="c-msg"
@@ -230,14 +223,14 @@ export function Contact() {
                   maxLength={2000}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full resize-y rounded border border-edge bg-void/70 px-3 py-2.5 text-sm text-ink placeholder:text-dim focus:border-cyan/60 focus:outline-none"
+                  className="w-full resize-y rounded-lg border border-white/[0.08] bg-white/[0.025] px-3.5 py-2.5 text-sm text-ink placeholder:text-dim backdrop-blur-md transition-colors focus:border-sage/50 focus:bg-white/[0.05] focus:outline-none"
                   placeholder="What would you like to build?"
                 />
               </div>
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="inline-flex w-full items-center justify-center gap-2 rounded border border-cyan/60 bg-cyan/10 px-5 py-3 font-mono text-sm text-cyan transition-all hover:bg-cyan/20 hover:shadow-[0_0_24px_rgba(34,211,238,0.25)] disabled:cursor-wait disabled:opacity-60"
+                className="btn-primary inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all disabled:cursor-wait disabled:opacity-60"
               >
                 {status === 'sending' ? (
                   <>
@@ -245,29 +238,25 @@ export function Contact() {
                   </>
                 ) : status === 'sent' ? (
                   <>
-                    <Check className="size-4" aria-hidden="true" /> Message Sent
+                    <Check className="size-4" aria-hidden="true" /> Message sent
                   </>
                 ) : status === 'error' ? (
                   <>
-                    <CircleAlert className="size-4" aria-hidden="true" /> Try Again
+                    <CircleAlert className="size-4" aria-hidden="true" /> Try again
                   </>
                 ) : (
                   <>
-                    <Send className="size-4" aria-hidden="true" /> Send Message
+                    <Send className="size-4" aria-hidden="true" /> Send message
                   </>
                 )}
               </button>
-              <p
-                className={`text-center font-mono text-[10px] ${line.className}`}
-                role="status"
-                aria-live="polite"
-              >
+              <p className={`text-center text-xs ${line.className}`} role="status" aria-live="polite">
                 {line.text}
               </p>
             </form>
-          </Panel>
-        </motion.div>
-      </div>
+          </div>
+        </Panel>
+      </motion.div>
     </Section>
   )
 }

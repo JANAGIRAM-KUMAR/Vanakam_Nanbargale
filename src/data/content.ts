@@ -1,11 +1,11 @@
 export const PROFILE = {
   name: 'Janagiram Kumar',
   handle: 'JANAGIRAM',
-  title: 'Software Engineer | AI Agent Developer | Network Engineer',
-  tags: ['Software Engineer', 'AI', 'Networking', 'DevOps'],
-  headline: 'Building intelligent systems and reliable infrastructure.',
+  title: 'Software Engineer',
+  tags: ['Software Engineer', 'AI', 'Networking'],
+  headline: 'Building reliable software and practical AI systems.',
   subline:
-    'Computer Science Engineer focused on AI agents, backend engineering, cloud infrastructure, DevOps, and computer networking.',
+    'Computer Science Engineering student with hands-on experience in AI agents, backend development, networking, and cloud infrastructure.',
   email: 'janagi2368@gmail.com',
   github: 'https://github.com/JANAGIRAM-KUMAR',
   linkedin: 'https://www.linkedin.com/in/janagiram-kumar-1b918421a/',
@@ -14,17 +14,15 @@ export const PROFILE = {
 export const NAV_LINKS = [
   { label: 'About', href: '#about' },
   { label: 'Experience', href: '#experience' },
-  { label: 'Skills', href: '#skills' },
   { label: 'Projects', href: '#projects' },
-  { label: 'Architecture', href: '#architecture' },
+  { label: 'Skills', href: '#skills' },
   { label: 'Contact', href: '#contact' },
 ] as const
 
 export const ABOUT = {
   paragraphs: [
-    "I'm a Computer Science Engineering student at Sri Venkateswara College of Engineering, interested in building scalable software systems, AI-powered applications, and reliable infrastructure.",
-    'My experience spans backend engineering, AI agent development, DevOps, and computer networking. During my internship at Ciena, I worked with real networking infrastructure, developed AI agents using Google ADK, designed network topologies, and built tools for managing network devices.',
-    'I enjoy understanding systems from the application layer all the way down to infrastructure and networking.',
+    'I am a Computer Science Engineering student at Sri Venkateswara College of Engineering. I build backend systems, AI-powered tools, and the infrastructure that supports them.',
+    'During my internship at Ciena, I developed AI agents with Google ADK, configured and validated routing switches, and built an internal device management tool. I enjoy working from application code down to the network layer.',
   ],
 } as const
 
@@ -34,14 +32,11 @@ export const EXPERIENCE = [
     role: 'Summer Intern — SVT/PV Routing IP',
     location: 'Gurugram, Haryana',
     period: 'Jun 2026 – Aug 2026',
-    accent: 'cyan' as const,
     highlights: [
       'Developed AI agents from scratch using Google Agent Development Kit (ADK).',
-      'Worked with Ciena Service Delivery Switches across multiple models.',
-      'Performed device configuration, IP addressing, DHCP setup, connectivity validation, and network protocol testing.',
-      'Designed and validated routing topologies across multiple switch models in a hands-on lab environment.',
-      'Built a device management tool to streamline device configuration and inventory tracking.',
-      'Collaborated with the SVT/PV Routing IP team to reproduce issues, troubleshoot failures, and validate fixes.',
+      'Configured and validated Ciena Service Delivery Switches, including IP addressing, DHCP, and routing protocol testing.',
+      'Designed and tested routing topologies across multiple switch models in a hands-on lab.',
+      'Built an internal device management tool for configuration and inventory tracking.',
     ],
   },
 ] as const
@@ -49,7 +44,6 @@ export const EXPERIENCE = [
 export type SkillCategory = {
   id: string
   label: string
-  description: string
   items: string[]
 }
 
@@ -57,50 +51,51 @@ export const SKILLS: SkillCategory[] = [
   {
     id: 'languages',
     label: 'Languages',
-    description: 'Core programming languages used across backend, systems, and scripting work.',
     items: ['Java', 'JavaScript', 'TypeScript', 'Python', 'C', 'C++'],
   },
   {
     id: 'frontend',
     label: 'Frontend',
-    description: 'Component-driven interfaces for web and mobile.',
-    items: ['React.js', 'React Native', 'Tailwind CSS'],
+    items: ['React', 'React Native', 'Tailwind CSS'],
   },
   {
-    id: 'backend',
-    label: 'Backend',
-    description: 'API design, auth, and service architecture.',
-    items: ['Node.js', 'Express.js', 'REST APIs', 'JWT Authentication'],
-  },
-  {
-    id: 'databases',
-    label: 'Databases',
-    description: 'Relational, document, and in-memory data stores.',
-    items: ['PostgreSQL', 'MongoDB', 'MySQL', 'Redis'],
+    id: 'backend-data',
+    label: 'Backend & Data',
+    items: [
+      'Node.js',
+      'Express.js',
+      'REST APIs',
+      'JWT',
+      'PostgreSQL',
+      'MongoDB',
+      'MySQL',
+      'Redis',
+    ],
   },
   {
     id: 'ai',
     label: 'AI',
-    description: 'Agent-based systems built with Google ADK.',
     items: ['Google ADK', 'AI Agent Development'],
   },
   {
-    id: 'devops',
-    label: 'DevOps',
-    description: 'Version control, CI/CD, containers, and orchestration.',
-    items: ['Git', 'GitHub Actions', 'Docker', 'Kubernetes'],
+    id: 'devops-tools',
+    label: 'DevOps & Tools',
+    items: [
+      'Git',
+      'GitHub Actions',
+      'Docker',
+      'Kubernetes',
+      'Jira',
+      'Confluence',
+      'BullMQ',
+      'Cloudinary',
+      'Postman',
+    ],
   },
   {
     id: 'networking',
     label: 'Networking',
-    description: 'Protocols and validation practiced on real lab hardware.',
     items: ['IP Networking', 'DHCP', 'IS-IS', 'OSPF', 'CFM'],
-  },
-  {
-    id: 'tools',
-    label: 'Tools',
-    description: 'Daily engineering toolchain.',
-    items: ['Jira', 'Confluence', 'BullMQ', 'Cloudinary', 'WebStorm', 'Postman'],
   },
 ]
 
@@ -120,9 +115,9 @@ export const PROJECTS: Project[] = [
     id: 'task-management',
     name: 'Task Management System',
     kind: 'backend',
-    tagline: 'Production-style task platform with queues, caching, and role-based access.',
+    tagline: 'A production-style task platform with queues, caching, and role-based access.',
     description:
-      'A full backend system for managing tasks with JWT and Google OAuth authentication, role-based access control, Redis caching, and BullMQ background job processing.',
+      'A backend system for managing tasks with JWT and Google OAuth, role-based access, Redis caching, and BullMQ background processing.',
     stack: [
       'Node.js',
       'TypeScript',
@@ -130,18 +125,15 @@ export const PROJECTS: Project[] = [
       'PostgreSQL',
       'Redis',
       'BullMQ',
-      'Docker Compose',
+      'Docker',
       'Cloudinary',
     ],
     features: [
       'RESTful API with task CRUD',
       'JWT authentication + Google OAuth',
       'Role-based access control',
-      'PostgreSQL indexing',
       'Redis caching and rate limiting',
-      'Pub/Sub and BullMQ background jobs',
-      'Cloudinary uploads',
-      'Structured logging',
+      'BullMQ background jobs',
       'Docker Compose setup',
     ],
     flow: [
@@ -157,10 +149,9 @@ export const PROJECTS: Project[] = [
     id: 'acquisitions-api',
     name: 'Acquisitions API',
     kind: 'backend',
-    tagline:
-      'Secure backend API engineered with containerization, automated testing, CI/CD, and security middleware.',
+    tagline: 'A secure API with automated testing, CI/CD, and containerized delivery.',
     description:
-      'A hardened REST API with schema validation, containerized delivery, and an automated pipeline from commit to deployment artifact.',
+      'A hardened REST API with schema validation, Docker delivery, and a pipeline from commit to deployment artifact.',
     stack: [
       'Node.js',
       'Express.js',
@@ -168,11 +159,9 @@ export const PROJECTS: Project[] = [
       'Docker',
       'GitHub Actions',
       'JWT',
-      'RBAC',
       'Zod',
       'Drizzle ORM',
       'Jest',
-      'Supertest',
     ],
     features: [
       'Schema validation with Zod',
@@ -196,19 +185,17 @@ export const PROJECTS: Project[] = [
     id: 'music-manager',
     name: 'Music Manager',
     kind: 'frontend',
-    tagline: 'Spotify-inspired music manager with centralized playback and smart queues.',
+    tagline: 'A responsive music app with centralized playback and smart queues.',
     description:
-      'A responsive music application with a centralized playback store, playlist queue management, and multimedia uploads on Cloudinary.',
+      'A responsive music application with centralized playback state, playlist queue management, and media uploads.',
     stack: ['React', 'TypeScript', 'Node.js', 'MongoDB', 'Zustand', 'Cloudinary'],
     features: [
       'Spotify-inspired interface',
-      'Centralized playback state with Zustand',
+      'Centralized playback state',
       'Responsive audio controls',
       'Playlist queue management',
-      'Clerk-based RBAC',
-      'Cloudinary multimedia uploads',
+      'Cloudinary media uploads',
       'MongoDB aggregation pipelines',
-      'Concurrent query handling',
     ],
     flow: ['React Client', 'Zustand Store', 'Node API', 'MongoDB', 'Cloudinary'],
   },
@@ -217,59 +204,5 @@ export const PROJECTS: Project[] = [
 export const RESEARCH = {
   title: 'An Overview of Artificial Intelligence Significance in Cloud Security',
   year: '2024',
-  description: 'Research exploring AI-driven threat detection models for adaptive cloud security systems.',
+  description: 'Research exploring AI-driven threat detection for adaptive cloud security systems.',
 } as const
-
-export const ACHIEVEMENTS = [
-  'Solved numerous Data Structures and Algorithms problems on LeetCode.',
-  'Continuously build full-stack, backend, DevOps, and AI applications to strengthen software engineering and system design skills.',
-] as const
-
-export const PHILOSOPHY = [
-  { label: 'Build', text: 'Turn ideas into working systems.' },
-  { label: 'Understand', text: 'Learn how software, networks, infrastructure, and AI interact.' },
-  { label: 'Improve', text: 'Measure, debug, optimize, and iterate.' },
-] as const
-
-export const STACK_LAYERS = [
-  {
-    title: 'AI',
-    lines: ['Google ADK · Agent Development'],
-    accent: 'term' as const,
-  },
-  {
-    title: 'Applications',
-    lines: ['React / Node / APIs'],
-    accent: 'cyan' as const,
-  },
-  {
-    title: 'Data Layer',
-    lines: ['PostgreSQL / MongoDB', 'Redis'],
-    accent: 'cyan' as const,
-  },
-  {
-    title: 'Infrastructure',
-    lines: ['Docker / Kubernetes', 'Linux / OpenStack'],
-    accent: 'blue' as const,
-  },
-  {
-    title: 'Networking',
-    lines: ['IP / DHCP / IS-IS', 'OSPF / CFM'],
-    accent: 'blue' as const,
-  },
-]
-
-export const TERMINAL_BOOT = [
-  '$ whoami',
-  'janagiram',
-  '',
-  'janagiram@portfolio:~$ ./profile',
-  '',
-  'ROLE      → Software Engineer',
-  'FOCUS     → AI / Backend / Networking',
-  'STACK     → Node.js / React / Python / Docker',
-  'AI        → Google ADK',
-  'INFRA     → Kubernetes / Linux / OpenStack',
-  'STATUS    → Building things',
-  '',
-]

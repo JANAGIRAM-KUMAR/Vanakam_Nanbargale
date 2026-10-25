@@ -1,10 +1,10 @@
 # Janagiram Kumar — Portfolio
 
-**Software Engineer • AI Agent Developer • Network Engineer**
+**Software Engineer • AI Agent Developer • Networking**
 
 A lightweight, production-ready personal portfolio built as a static React application. Designed to run reliably on an OpenStack virtual machine behind Docker and Nginx.
 
-Theme: *a software engineer's personal infrastructure dashboard* — dark, technical, minimal, fast.
+Theme: *calm forest glass* — warm stone and sage, soft ambient light, very transparent surfaces, and an editorial layout focused on the work.
 
 ---
 
@@ -53,15 +53,25 @@ npm run preview    # serves ./dist for a final smoke test
 
 ---
 
-## 2. OpenStack Deployment
+## 2. Bug Run
+
+The hero includes a custom canvas endless runner. Tap or press Space to jump
+the duck over an expanding cast of bugs: beetles, spiders, caterpillars,
+flies, swarms, and oversized beetles. Spawn rate and speed ramp up with the
+score, and the best run is saved locally. It is fully responsive and needs no
+image assets or network connection.
+
+---
+
+## 3. OpenStack Deployment
 
 ### Step 1 — Create an OpenStack instance
 
 1. Log in to your OpenStack dashboard (Horizon).
 2. **Compute → Instances → Launch Instance**.
 3. Suggested spec: Ubuntu 22.04/24.04 LTS, **2 vCPU / 4 GB RAM**, 20 GB disk.
-3. Assign a floating IP to the instance.
-4. In **Access & Security → Security Groups**, add these ingress rules:
+4. Assign a floating IP to the instance.
+5. In **Access & Security → Security Groups**, add these ingress rules:
 
 | Protocol | Port   | Source        | Purpose            |
 | -------- | ------ | ------------- | ------------------ |
@@ -199,25 +209,20 @@ Force HTTP → HTTPS by uncommenting the `return 301 https://...` line.
 │   └── favicon.svg
 └── src/
     ├── App.tsx              # section composition
-    ├── index.css            # design tokens, animations, reduced-motion
+    ├── index.css            # design tokens + reduced-motion support
     ├── data/content.ts      # all resume content (single source of truth)
-    ├── hooks/
-    │   └── useCommandPalette.ts
     └── components/
         ├── Nav.tsx              # sticky navigation
-        ├── CommandPalette.tsx   # ⌘K palette
-        ├── Hero.tsx             # hero section
-        ├── Terminal.tsx         # interactive terminal + easter egg
-        ├── About.tsx
-        ├── Experience.tsx       # Ciena timeline + lab diagram
-        ├── Skills.tsx           # expandable stack categories
-        ├── Projects.tsx         # large project panels + architecture flows
-        ├── Research.tsx         # research / achievements / philosophy
-        ├── Architecture.tsx     # scroll-animated stack layers
+        ├── Hero.tsx             # intro + calls to action
+        ├── BugRun.tsx            # endless-runner mini-game
+        ├── About.tsx            # background + quick facts
+        ├── Experience.tsx       # work timeline + education
+        ├── Projects.tsx         # selected project list
+        ├── Skills.tsx           # grouped skill list
         ├── Contact.tsx          # contact details + EmailJS form (mailto fallback)
         ├── Footer.tsx
         ├── icons.tsx            # GitHub/LinkedIn icons
-        └── ui.tsx               # Section/Panel/Chip primitives
+        └── ui.tsx               # Section/Panel primitives
 ```
 
 ---
@@ -294,13 +299,3 @@ domain to `janagiram.dpdns.org` in EmailJS settings.
   per-IP; only `GET`/`HEAD` are accepted on the origin.
 - GitHub Actions steps are pinned to commit SHAs; the workflow uses the
   least-permission `pages`/`id-token` token pair and builds from the lockfile.
-
----
-
-## Easter Egg
-
-Open the terminal in the hero and type:
-
-```
-sudo hire janagiram
-```

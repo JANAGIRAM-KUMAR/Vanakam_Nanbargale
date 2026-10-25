@@ -1,126 +1,82 @@
-import { Mail, Search, TerminalSquare } from 'lucide-react'
-import { GithubIcon as Github, LinkedinIcon as Linkedin } from './icons'
 import { useEffect, useState } from 'react'
 import { NAV_LINKS, PROFILE } from '../data/content'
 
-export function Nav({ onOpenPalette }: { onOpenPalette: () => void }) {
-  const [scrolled, setScrolled] = useState(false)
+export function Nav() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'glass border-b border-edge' : 'border-b border-transparent'
-      }`}
-    >
-      <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:px-8" aria-label="Primary">
+    <header className="fixed inset-x-0 top-3 z-50 px-4 sm:top-4 sm:px-6">
+      <nav
+        className="glass mx-auto flex h-12 max-w-7xl items-center justify-between rounded-full px-2.5 sm:h-14 sm:px-4"
+        aria-label="Primary"
+      >
         <a
           href="#top"
-          className="group flex items-center gap-2 font-mono text-sm font-semibold tracking-[0.22em] text-ink"
+          className="flex min-w-0 items-center gap-2.5 rounded-full py-1 pl-1 pr-2"
+          aria-label={`${PROFILE.name} — back to top`}
         >
-          <span className="flex size-5 items-center justify-center rounded border border-cyan/50 text-cyan transition-colors group-hover:bg-cyan/10">
-            <TerminalSquare className="size-3" aria-hidden="true" />
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-sage font-display text-sm text-void">
+            JK
           </span>
-          {PROFILE.handle}
+          <span className="hidden truncate text-sm font-medium text-ink min-[360px]:inline">
+            {PROFILE.name}
+          </span>
         </a>
 
-        <div className="hidden items-center gap-6 md:flex">
-          {NAV_LINKS.map((l) => (
+        <div className="hidden items-center gap-7 md:flex">
+          {NAV_LINKS.map((link) => (
             <a
-              key={l.href}
-              href={l.href}
-              className="font-mono text-xs tracking-wider text-muted transition-colors hover:text-cyan"
+              key={link.href}
+              href={link.href}
+              className="text-sm text-muted transition-colors hover:text-ink"
             >
-              {l.label}
+              {link.label}
             </a>
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={onOpenPalette}
-            className="hidden items-center gap-2 rounded border border-edge bg-panel/70 px-2.5 py-1.5 font-mono text-[11px] text-dim transition-colors hover:border-edge-bright hover:text-muted sm:flex"
-            aria-label="Open command palette"
-          >
-            <Search className="size-3" aria-hidden="true" />
-            Search
-            <kbd className="rounded border border-edge-bright px-1 text-[10px] text-dim">⌘K</kbd>
-          </button>
-          <a
-            href={PROFILE.github}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="hidden rounded p-2 text-muted transition-colors hover:text-cyan sm:block"
-            aria-label="GitHub profile"
-          >
-            <Github className="size-4" />
-          </a>
-          <a
-            href={PROFILE.linkedin}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="hidden rounded p-2 text-muted transition-colors hover:text-cyan sm:block"
-            aria-label="LinkedIn profile"
-          >
-            <Linkedin className="size-4" />
-          </a>
-          <a
-            href={`mailto:${PROFILE.email}`}
-            className="hidden rounded p-2 text-muted transition-colors hover:text-cyan sm:block"
-            aria-label="Email"
-          >
-            <Mail className="size-4" />
-          </a>
-          <button
-            type="button"
-            className="rounded border border-edge px-2.5 py-1.5 font-mono text-xs text-muted md:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-label="Toggle navigation menu"
-          >
-            {open ? '✕' : '≡'}
-          </button>
-        </div>
+        <button
+          type="button"
+          className="glass-pill rounded-full px-3.5 py-1.5 text-sm text-muted md:hidden"
+          onClick={() => setOpen((value) => !value)}
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          aria-label="Toggle navigation menu"
+        >
+          {open ? 'Close' : 'Menu'}
+        </button>
       </nav>
 
       {open && (
-        <div className="glass border-t border-edge md:hidden">
-          <div className="mx-auto flex max-w-6xl flex-col px-5 py-3">
-            {NAV_LINKS.map((l) => (
+        <div
+          id="mobile-nav"
+          className="glass mx-auto mt-2 max-h-[calc(100dvh-5.5rem)] max-w-7xl overflow-y-auto rounded-2xl p-2 md:hidden"
+        >
+          <div className="flex flex-col">
+            {NAV_LINKS.map((link) => (
               <a
-                key={l.href}
-                href={l.href}
+                key={link.href}
+                href={link.href}
                 onClick={() => setOpen(false)}
-                className="border-b border-edge/60 py-3 font-mono text-sm text-muted transition-colors hover:text-cyan"
+                className="rounded-xl px-4 py-3 text-sm text-muted transition-colors hover:bg-white/[0.04] hover:text-ink"
               >
-                <span className="text-dim">→</span> {l.label}
+                {link.label}
               </a>
             ))}
-            <div className="flex gap-4 py-3">
-              <a href={PROFILE.github} target="_blank" rel="noreferrer noopener" className="text-muted hover:text-cyan">
-                GitHub
-              </a>
-              <a href={PROFILE.linkedin} target="_blank" rel="noreferrer noopener" className="text-muted hover:text-cyan">
-                LinkedIn
-              </a>
-              <a href={`mailto:${PROFILE.email}`} className="text-muted hover:text-cyan">
-                Email
+            <div className="mt-1 border-t border-white/[0.07] pt-1">
+              <a
+                href={`mailto:${PROFILE.email}`}
+                className="block rounded-xl px-4 py-3 text-sm text-muted transition-colors hover:bg-white/[0.04] hover:text-ink"
+              >
+                Email me
               </a>
             </div>
           </div>
