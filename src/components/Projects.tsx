@@ -1,61 +1,253 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { PROJECTS } from '../data/content'
+import { ArrowUpRight, Layers, Music4, Server } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+import { GithubIcon as Github } from './icons'
+import { PROJECTS, type Project, type ServiceNode } from '../data/content'
 import { Panel, Section } from './ui'
 
-export function Projects() {
+const ICONS: Record<Project['icon'], LucideIcon> = {
+  layers: Layers,
+  server: Server,
+  music: Music4,
+}
+
+const ARCH_LABEL: Record<Project['arch'], string> = {
+  microservices: 'MICROSERVICES',
+  api: 'REQUEST PATH',
+  fullstack: 'SYSTEM MAP',
+}
+
+const KIND_LABEL: Record<Project['kind'], string> = {
+  backend: 'backend',
+  fullstack: 'full-stack',
+}
+
+function Chip({ children }: { children: string }) {
+  return (
+    <span className="inline-flex rounded-full border border-white/[0.09] bg-white/[0.015] px-2.5 py-1 font-mono text-[10px] text-muted">
+      {children}
+    </span>
+  )
+}
+
+function ServicesArch({ services, label }: { services: ServiceNode[]; label: string }) {
+  const byLayer = (layer: ServiceNode['layer']) => services.filter((s) => s.layer === layer)
+
+  return (
+    <div
+      className="rounded-xl border border-edge bg-void/60 p-4"
+      role="img"
+      aria-label={`${label}: ${services.map((s) => s.name).join(', ')}`}
+    >
+      <div className="mb-3 flex items-center justify-between font-mono text-[10px] tracking-[0.2em] text-dim">
+        <span>ARCHITECTURE</span>
+        <span className="text-sage">{label}</span>
+      </div>
+
+      <div className="flex flex-col items-center gap-2">
+        {byLayer('edge').map((service) => (
+          <div
+            key={service.name}
+            className="rounded-lg border border-sage/40 bg-sage/[0.07] px-3 py-1.5 text-center font-mono text-[11px] text-sage"
+          >
+            {service.name}
+            <span className="ml-2 font-sans text-[10px] text-dim">{service.note}</span>
+          </div>
+        ))}
+
+        <span className="h-3 w-px bg-edge-bright" aria-hidden="true" />
+
+        <div className="grid w-full grid-cols-2 gap-1.5 sm:grid-cols-4">
+          {byLayer('core').map((service) => (
+            <div
+              key={service.name}
+              className="rounded-lg border border-edge-bright/70 bg-panel px-2 py-2 text-center font-mono text-[10px] text-muted"
+            >
+              {service.name}
+              <span className="sr-only">{service.note}</span>
+            </div>
+          ))}
+        </div>
+
+        <span className="h-3 w-px bg-edge-bright" aria-hidden="true" />
+
+        <div className="grid w-full grid-cols-3 gap-1.5">
+          {byLayer('data').map((service) => (
+            <div
+              key={service.name}
+              className="rounded-lg border border-edge bg-void px-2 py-1.5 text-center font-mono text-[10px] text-dim"
+            >
+              {service.name}
+              <span className="sr-only">{service.note}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Signals({ items }: { items: Project['signals'] }) {
+  return (
+    <dl className="mt-3 grid grid-cols-2 gap-1.5">
+      {items.map((signal) => (
+        <div key={signal.label} className="rounded-lg border border-edge bg-void/60 px-3 py-2">
+          <dt className="font-mono text-[9px] tracking-[0.18em] text-dim">{signal.label}</dt>
+          <dd className="mt-0.5 truncate font-mono text-[11px] text-muted" title={signal.value}>
+            {signal.value}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
+function Equalizer() {
   const reduce = useReducedMotion()
 
+  return (
+    <div className="mt-3 rounded-xl border border-edge bg-void/60 p-4" aria-hidden="true">
+      <div className="mb-3 flex items-center justify-between font-mono text-[10px] tracking-[0.2em] text-dim">
+        <span>NOW PLAYING</span>
+        <span className="text-clay">02:41 / 03:58</span>
+      </div>
+      <div className="flex h-16 items-end gap-1.5">
+        {[14, 26, 18, 34, 22, 40, 28, 16, 30, 20, 36, 24, 32, 18, 26, 12].map((height, i) => (
+          <motion.span
+            key={i}
+            className="w-full rounded-sm bg-clay/50"
+            style={{ height }}
+            animate={reduce ? undefined : { opacity: [0.35, 1, 0.35], scaleY: [0.7, 1, 0.7] }}
+            transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.12, ease: 'easeInOut' }}
+          />
+        ))}
+      </div>
+      <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-edge-bright">
+        <motion.span
+          className="block h-full rounded-full bg-clay"
+          initial={{ width: '0%' }}
+          animate={reduce ? undefined : { width: ['0%', '68%', '0%'] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </div>
+    </div>
+  )
+}
+
+function ProjectPanel({ project, index }: { project: Project; index: number }) {
+  const reduce = useReducedMotion()
+  const isBackend = project.kind === 'backend'
+  const accent = isBackend ? 'text-sage' : 'text-clay'
+  const accentDot = isBackend ? 'bg-sage/60' : 'bg-clay/60'
+  const iconStyle = isBackend
+    ? 'border-sage/40 bg-sage/[0.07] text-sage'
+    : 'border-clay/40 bg-clay/[0.07] text-clay'
+  const topLine = isBackend ? 'via-sage/50' : 'via-clay/50'
+  const Icon = ICONS[project.icon]
+  const repoShort = project.repo.split('/')[1]
+  const isMusic = project.icon === 'music'
+
+  return (
+    <motion.article
+      initial={reduce ? false : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.45, delay: index * 0.05, ease: 'easeOut' }}
+      className="group relative"
+    >
+      <Panel hover className="overflow-hidden">
+        <div
+          className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${topLine} to-transparent`}
+          aria-hidden="true"
+        />
+
+        <div className="flex flex-wrap items-center gap-2.5 border-b border-white/[0.07] px-5 py-3.5 sm:px-7">
+          <span className={`flex size-7 items-center justify-center rounded-lg border ${iconStyle}`}>
+            <Icon className="size-3.5" aria-hidden="true" />
+          </span>
+          <span className="font-mono text-[10px] tracking-[0.2em] text-dim">
+            PROJECT_{String(index + 1).padStart(2, '0')}
+          </span>
+          <span className="rounded-full border border-white/[0.09] px-2 py-0.5 font-mono text-[9px] text-muted">
+            {KIND_LABEL[project.kind]}
+          </span>
+
+          <a
+            href={`https://github.com/${project.repo}`}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="ml-auto inline-flex items-center gap-1.5 font-mono text-[10px] text-dim transition-colors hover:text-ink focus-visible:text-ink"
+            aria-label={`View ${project.name} on GitHub`}
+          >
+            <Github className="size-3.5" aria-hidden="true" />
+            <span className="max-w-[12ch] truncate sm:max-w-none">{repoShort}</span>
+            <ArrowUpRight
+              className="size-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </a>
+        </div>
+
+        <div className="grid gap-5 p-5 sm:gap-6 sm:p-7 lg:grid-cols-[1.35fr_1fr]">
+          <div>
+            <h3 className="font-display text-xl leading-tight text-ink sm:text-2xl">
+              {project.name}
+            </h3>
+            <p className={`mt-1.5 font-mono text-xs leading-relaxed ${accent}`}>{project.tagline}</p>
+            <p className="mt-4 text-sm leading-relaxed text-muted">{project.description}</p>
+
+            <div className="mt-5">
+              <div className="mb-2 font-mono text-[10px] tracking-[0.2em] text-dim">HIGHLIGHTS</div>
+              <ul className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
+                {project.features.map((feature, i) => (
+                  <li
+                    key={feature}
+                    className={`${i >= 3 ? 'hidden sm:flex' : 'flex'} items-start gap-2 text-[13px] leading-relaxed text-muted`}
+                  >
+                    <span className={`mt-1.5 size-1 shrink-0 rounded-full ${accentDot}`} aria-hidden="true" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-1.5 [&>span:nth-child(n+6)]:hidden sm:[&>span:nth-child(n+6)]:inline-flex">
+              {project.stack.map((item) => (
+                <Chip key={item}>{item}</Chip>
+              ))}
+            </div>
+
+            {isMusic && (
+              <div className="sm:hidden">
+                <Equalizer />
+              </div>
+            )}
+          </div>
+
+          <div className="hidden sm:block">
+            <ServicesArch services={project.services} label={ARCH_LABEL[project.arch]} />
+            <Signals items={project.signals} />
+            {isMusic && <Equalizer />}
+          </div>
+        </div>
+      </Panel>
+    </motion.article>
+  )
+}
+
+export function Projects() {
   return (
     <Section
       id="projects"
       index="03"
       title="Projects"
-      intro="Selected work across backend, infrastructure, and frontend."
+      intro="Systems with architecture, tests, queues, auth, and containers — not just screens."
     >
-      <Panel className="overflow-hidden">
-        <div className="divide-y divide-white/[0.07]">
-          {PROJECTS.map((project, index) => (
-            <motion.article
-              key={project.id}
-              initial={reduce ? false : { opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.4, delay: index * 0.04 }}
-              className="p-5 transition-colors hover:bg-white/[0.015] sm:p-8"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="font-display text-xl leading-tight text-ink sm:text-2xl">
-                    {project.name}
-                  </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-sage">{project.tagline}</p>
-                </div>
-                <span className="hidden shrink-0 font-mono text-[10px] text-dim sm:block">
-                  0{index + 1}
-                </span>
-              </div>
-
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:mt-4">
-                {project.description}
-              </p>
-
-              <ul className="mt-4 grid gap-x-8 gap-y-1.5 sm:grid-cols-2">
-                {project.features.slice(0, 3).map((feature) => (
-                  <li key={feature} className="flex gap-2.5 text-sm leading-relaxed text-muted">
-                    <span className="mt-2 size-1 shrink-0 rounded-full bg-sage/60" aria-hidden="true" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              <p className="mt-4 hidden font-mono text-[10px] leading-relaxed text-dim sm:block">
-                {project.stack.slice(0, 6).join(' · ')}
-                {project.stack.length > 6 && ` · +${project.stack.length - 6}`}
-              </p>
-            </motion.article>
-          ))}
-        </div>
-      </Panel>
+      <div className="space-y-5">
+        {PROJECTS.map((project, index) => (
+          <ProjectPanel key={project.id} project={project} index={index} />
+        ))}
+      </div>
     </Section>
   )
 }
