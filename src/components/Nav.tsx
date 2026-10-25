@@ -58,7 +58,7 @@ export function Nav() {
       {open && (
         <div
           id="mobile-nav"
-          className="glass mx-auto mt-2 max-h-[calc(100dvh-5.5rem)] max-w-7xl overflow-y-auto rounded-2xl p-2 md:hidden"
+          className="mx-auto mt-2 max-h-[calc(100dvh-5.5rem)] max-w-7xl overflow-y-auto rounded-2xl border border-edge bg-panel p-2 shadow-2xl md:hidden"
         >
           <div className="flex flex-col">
             {NAV_LINKS.map((link) => (
@@ -66,7 +66,7 @@ export function Nav() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-xl px-4 py-3 text-sm text-muted transition-colors hover:bg-white/[0.04] hover:text-ink"
+                className="rounded-xl px-4 py-3 text-sm text-ink transition-colors hover:bg-white/[0.06]"
               >
                 {link.label}
               </a>
@@ -74,7 +74,7 @@ export function Nav() {
             <div className="mt-1 border-t border-white/[0.07] pt-1">
               <a
                 href={`mailto:${PROFILE.email}`}
-                className="block rounded-xl px-4 py-3 text-sm text-muted transition-colors hover:bg-white/[0.04] hover:text-ink"
+                className="block rounded-xl px-4 py-3 text-sm text-ink transition-colors hover:bg-white/[0.06]"
               >
                 Email me
               </a>
