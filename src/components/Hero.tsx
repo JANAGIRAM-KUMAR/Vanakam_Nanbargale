@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, Mail } from 'lucide-react'
 import { GithubIcon as Github, LinkedinIcon as Linkedin } from './icons'
 import { PROFILE } from '../data/content'
-import { BugRun } from './BugRun'
+import { CommitStacker } from './CommitStacker'
 
 export function Hero() {
   const reduce = useReducedMotion()
@@ -90,7 +90,7 @@ export function Hero() {
         </motion.div>
       </div>
 
-      <BugRun />
+      <CommitStacker />
     </section>
   )
 }

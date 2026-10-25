@@ -53,13 +53,13 @@ npm run preview    # serves ./dist for a final smoke test
 
 ---
 
-## 2. Bug Run
+## 2. Commit Stacker
 
-The hero includes a custom canvas endless runner. Tap or press Space to jump
-the duck over an expanding cast of bugs: beetles, spiders, caterpillars,
-flies, swarms, and oversized beetles. Spawn rate and speed ramp up with the
-score, and the best run is saved locally. It is fully responsive and needs no
-image assets or network connection.
+The hero includes a custom canvas stacking game. Tap or press Space to drop
+each commit onto the stack. Perfect drops keep the full block width and build
+a combo; off-center commits are trimmed, and missing the stack ends the run.
+Block speed ramps up with the score, and the best run is saved locally. It is
+fully responsive and needs no image assets or network connection.
 
 ---
 
@@ -214,7 +214,7 @@ Force HTTP → HTTPS by uncommenting the `return 301 https://...` line.
     └── components/
         ├── Nav.tsx              # sticky navigation
         ├── Hero.tsx             # intro + calls to action
-        ├── BugRun.tsx            # endless-runner mini-game
+        ├── CommitStacker.tsx     # stacking mini-game
         ├── About.tsx            # background + quick facts
         ├── Experience.tsx       # work timeline + education
         ├── Projects.tsx         # selected project list
