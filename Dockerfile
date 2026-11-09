@@ -22,14 +22,13 @@ RUN npm run build
 # ---------- Stage 2: serve (non-root, minimal surface) ----------
 FROM nginxinc/nginx-unprivileged:1.27-alpine AS runtime
 
-# curl is required by the HEALTHCHECK. The unprivileged image already runs
-# nginx as uid 101 (no root master), so a compromised nginx has no root
-# capabilities to escalate with.
-RUN apk add --no-cache curl
+# Upgrade alpine packages to patch CVEs and install curl for healthcheck
+RUN apk update && apk upgrade --no-cache && apk add --no-cache curl
 
 # Drop the bundled default server block.
 RUN rm -f /etc/nginx/conf.d/default.conf
 
+COPY security-headers.conf /etc/nginx/security-headers.conf
 COPY nginx.conf /etc/nginx/conf.d/portfolio.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 

@@ -17,6 +17,10 @@ function htmlSecurityHeaders(): Plugin {
     "img-src 'self' data:",
     "font-src 'self' data:",
     "connect-src 'self' https://api.emailjs.com",
+    "frame-src 'none'",
+    "worker-src 'none'",
+    "manifest-src 'self'",
+    "media-src 'none'",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
@@ -27,7 +31,11 @@ function htmlSecurityHeaders(): Plugin {
     name: 'html-security-headers',
     apply: 'build',
     transformIndexHtml(html) {
-      const meta = `<meta http-equiv="Content-Security-Policy" content="${csp}" />\n    <meta name="referrer" content="strict-origin-when-cross-origin" />`
+      const meta = [
+        `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
+        '<meta http-equiv="X-Content-Type-Options" content="nosniff" />',
+        '<meta name="referrer" content="strict-origin-when-cross-origin" />',
+      ].join('\n    ')
       return html.replace('<meta name="theme-color"', meta + '\n    <meta name="theme-color"')
     },
   }
