@@ -2,235 +2,179 @@ export const PROFILE = {
   name: 'Janagiram Kumar',
   handle: 'JANAGIRAM',
   title: 'Software Engineer',
-  tags: ['Software Engineer', 'AI', 'Networking'],
-  headline: 'Building reliable software and practical AI systems.',
-  subline:
-    'Computer Science Engineering student with hands-on experience in AI agents, backend development, networking, and cloud infrastructure.',
+  role: 'Software Engineer • AI & Cloud Infrastructure',
+  location: 'Chennai, India',
+  phone: '+91 9444808937',
   email: 'janagi2368@gmail.com',
   github: 'https://github.com/JANAGIRAM-KUMAR',
   linkedin: 'https://www.linkedin.com/in/janagiram-kumar-1b918421a/',
+  website: 'https://janagiram.dpdns.org',
+  headline: 'Building resilient backend systems, distributed microservices, and autonomous AI agents.',
+  subline:
+    'Computer Science Engineering student with hands-on experience in AI agents, backend systems, networking, and cloud infrastructure.',
+  resumePdfUrl: '/resume.pdf',
 } as const
 
 export const NAV_LINKS = [
-  { label: 'About', href: '#about' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Skills', href: '#skills' },
+  { label: 'Overview', href: '#top' },
+  { label: 'Resume', href: '#resume' },
   { label: 'Contact', href: '#contact' },
 ] as const
 
-export const ABOUT = {
-  paragraphs: [
-    'I am a Computer Science Engineering student at Sri Venkateswara College of Engineering. I build backend systems, AI-powered tools, and the infrastructure that supports them.',
-    'During my internship at Ciena, I developed AI agents with Google ADK, configured and validated routing switches, and built an internal device management tool. I enjoy working from application code down to the network layer.',
+export const EDUCATION = {
+  institution: 'Sri Venkateswara College of Engineering (SVCE)',
+  degree: 'B.E. in Computer Science and Engineering',
+  period: '2023 – 2027',
+  cgpa: '9.09 / 10.0',
+  coursework: [
+    'Data Structures & Algorithms',
+    'DBMS',
+    'Operating Systems',
+    'Computer Networks',
+    'System Design',
+    'OOP',
   ],
 } as const
 
 export const EXPERIENCE = [
   {
     company: 'Ciena',
-    role: 'Summer Intern — SVT/PV Routing IP',
+    role: 'Summer Intern – SVT/PV Routing IP',
     location: 'Gurugram, Haryana',
     period: 'Jun 2026 – Aug 2026',
+    metrics: [
+      { label: 'Deployment Time', value: '-40%' },
+      { label: 'Defects Triaged', value: '10+' },
+      { label: 'Topology Protocols', value: 'IS-IS / OSPF' },
+    ],
     highlights: [
-      'Developed AI agents from scratch using Google Agent Development Kit (ADK).',
-      'Configured and validated Ciena Service Delivery Switches, including IP addressing, DHCP, and routing protocol testing.',
-      'Designed and tested routing topologies across multiple switch models in a hands-on lab.',
-      'Built an internal device management tool for configuration and inventory tracking.',
+      'Developed an internal network device management tool across Ciena Service Delivery Switches, reducing manual deployment and verification time by 40% while eliminating manual errors on multi-node topologies.',
+      'Developed autonomous AI agents using Google Agent Development Kit (ADK) to automate telemetry extraction, log triage, and device state verification workflows.',
+      'Partnered with P3 engineers and cross-functional teams to design, deploy, and validate multi-switch network topologies (IS-IS, OSPF, DHCP); triaged and resolved 10+ critical hardware/software defect tickets using Jira.',
+      'Collaborated with globally distributed engineering teams (Ottawa and India) to troubleshoot failure scenarios, physical device configurations, and validate software fixes on networking infrastructure.',
     ],
   },
 ] as const
 
-export type SkillCategory = {
+export type ResumeProject = {
   id: string
-  label: string
-  items: string[]
+  name: string
+  stack: string[]
+  repo?: string
+  highlights: string[]
+  badge?: string
 }
 
-export const SKILLS: SkillCategory[] = [
+export const PROJECTS: ResumeProject[] = [
   {
-    id: 'languages',
-    label: 'Languages',
-    items: ['Java', 'JavaScript', 'TypeScript', 'Python', 'C', 'C++'],
+    id: 'microservices-platform',
+    name: 'Distributed Microservices Platform',
+    stack: ['TypeScript', 'Node.js', 'Express', 'PostgreSQL', 'Apache Kafka', 'Docker'],
+    repo: 'https://github.com/JANAGIRAM-KUMAR/microservices-workflow',
+    badge: '380+ Automated Tests',
+    highlights: [
+      'Built a modular microservices platform with an edge API Gateway handling request routing, rate limiting, and centralized Role-Based Access Control (RBAC).',
+      'Implemented asynchronous event streaming with Apache Kafka for background task auditing and automated PostgreSQL migrations, backed by 380+ automated tests.',
+      'Containerized all services and Kafka brokers with Docker Compose for automated CI verification and local replication.',
+    ],
   },
   {
-    id: 'frontend',
-    label: 'Frontend',
-    items: ['React', 'React Native', 'Tailwind CSS'],
+    id: 'cloud-infrastructure',
+    name: 'Cloud Infrastructure & Automated CI/CD Pipeline',
+    stack: ['Docker', 'GitHub Actions', 'Nginx', 'Linux', 'OpenStack', 'Bash'],
+    repo: 'https://github.com/JANAGIRAM-KUMAR/Vanakam_Nanbargale',
+    badge: 'Zero-Downtime Deployments',
+    highlights: [
+      'Engineered an automated CI/CD pipeline using GitHub Actions to run linting, type checks, and zero-downtime container deployments.',
+      'Containerized production services using multi-stage Docker builds and deployed them behind an Nginx reverse proxy with automated health checks.',
+      'Hardened web server with connection limits, Slowloris timeouts, and Content Security Policies on OpenStack virtual infrastructure.',
+    ],
   },
   {
-    id: 'backend-data',
-    label: 'Backend & Data',
-    items: [
+    id: 'soundwave',
+    name: 'Soundwave – Full-Stack Audio Streaming Platform',
+    stack: ['React 19', 'TypeScript', 'Node.js', 'Express', 'MongoDB', 'Web Audio API'],
+    repo: 'https://github.com/JANAGIRAM-KUMAR/MusicManager',
+    badge: '90% Re-render Reduction',
+    highlights: [
+      'Developed a full-stack media streaming web application with custom audio equalization, dynamic volume normalization, and real-time canvas visualizers.',
+      'Built a synchronized karaoke lyrics engine with sub-millisecond playhead tracking, optimizing the audio event loop to reduce unnecessary React re-renders by 90%.',
+      'Designed responsive UI featuring playlist curation, queue management, and instantaneous stream seek buffers.',
+    ],
+  },
+]
+
+export type SkillGroup = {
+  category: string
+  skills: string[]
+}
+
+export const SKILL_GROUPS: SkillGroup[] = [
+  {
+    category: 'Languages',
+    skills: ['TypeScript', 'JavaScript', 'Python', 'SQL (PostgreSQL)', 'Java', 'C/C++'],
+  },
+  {
+    category: 'Backend & Systems',
+    skills: [
       'Node.js',
       'Express.js',
-      'REST APIs',
-      'JWT',
-      'PostgreSQL',
-      'MongoDB',
-      'MySQL',
+      'RESTful APIs',
+      'Apache Kafka',
+      'Microservices Architecture',
+      'Zod',
       'Redis',
     ],
   },
   {
-    id: 'ai',
-    label: 'AI',
-    items: ['Google ADK', 'AI Agent Development'],
+    category: 'AI & Testing',
+    skills: [
+      'Google ADK (AI Agents)',
+      'Generative AI',
+      'ML Anomaly Detection',
+      'MCP',
+      'Vitest',
+      'Supertest',
+    ],
   },
   {
-    id: 'devops-tools',
-    label: 'DevOps & Tools',
-    items: [
-      'Git',
-      'GitHub Actions',
+    category: 'DevOps & Infrastructure',
+    skills: [
       'Docker',
       'Kubernetes',
-      'Jira',
-      'Confluence',
-      'BullMQ',
-      'Cloudinary',
-      'Postman',
+      'GitHub Actions (CI/CD)',
+      'Nginx (Reverse Proxy)',
+      'Linux',
+      'Git',
     ],
   },
   {
-    id: 'networking',
-    label: 'Networking',
-    items: ['IP Networking', 'DHCP', 'IS-IS', 'OSPF', 'CFM'],
-  },
-]
-
-export type ServiceNode = {
-  name: string
-  note: string
-  layer: 'edge' | 'core' | 'data'
-}
-
-export type ProjectSignal = { label: string; value: string }
-
-export type Project = {
-  id: string
-  name: string
-  kind: 'backend' | 'fullstack'
-  arch: 'microservices' | 'api' | 'fullstack'
-  icon: 'layers' | 'server' | 'music'
-  repo: string
-  tagline: string
-  description: string
-  stack: string[]
-  features: string[]
-  signals: ProjectSignal[]
-  services: ServiceNode[]
-}
-
-export const PROJECTS: Project[] = [
-  {
-    id: 'microservices-workflow',
-    name: 'Microservices Task Platform',
-    kind: 'backend',
-    arch: 'microservices',
-    icon: 'layers',
-    repo: 'JANAGIRAM-KUMAR/microservices-workflow',
-    tagline: 'Five services, one gateway, Kafka events, and a pipeline that ships on merge.',
-    description:
-      'An npm-workspaces monorepo where an API gateway (auth, rate limiting, routing) fronts auth, task, media, and workflow services over HTTP and Kafka. A shared package holds JWT, Kafka, logging, and error contracts; PostgreSQL and S3-backed uploads persist the data.',
-    stack: ['TypeScript', 'Express', 'PostgreSQL', 'Apache Kafka', 'S3', 'Docker', 'Vitest'],
-    features: [
-      'Gateway enforces JWT, rate limits, and service-to-service auth',
-      'Kafka event flow: task.created drives the workflow service',
-      'Shared package for JWT, Kafka client, logger, typed errors',
-      'Media service issues presigned S3 upload URLs',
-      'Typecheck + tests on every PR, Docker Hub image on merge',
-      'Docker Compose runs Kafka and all five services locally',
-    ],
-    signals: [
-      { label: 'SERVICES', value: '5 · ports 5009–5013' },
-      { label: 'TEST FILES', value: '35 (Vitest + Supertest)' },
-      { label: 'WORKFLOWS', value: 'ci.yml · cd.yml' },
-      { label: 'RUNTIME', value: 'Node 22 + TS (tsx)' },
-    ],
-    services: [
-      { name: 'API GATEWAY', note: 'routing · auth · rate-limit', layer: 'edge' },
-      { name: 'AUTH', note: 'JWT issue/verify', layer: 'core' },
-      { name: 'TASK', note: 'CRUD · emits events', layer: 'core' },
-      { name: 'MEDIA', note: 'presigned S3', layer: 'core' },
-      { name: 'WORKFLOW', note: 'Kafka consumer', layer: 'core' },
-      { name: 'POSTGRESQL', note: 'Neon', layer: 'data' },
-      { name: 'KAFKA', note: 'topics', layer: 'data' },
-      { name: 'S3 STORAGE', note: 'attachments', layer: 'data' },
-    ],
+    category: 'Frontend & UI',
+    skills: ['React.js', 'React Native', 'Tailwind CSS', 'Zustand'],
   },
   {
-    id: 'acquisitions-api',
-    name: 'Acquisitions API',
-    kind: 'backend',
-    arch: 'api',
-    icon: 'server',
-    repo: 'JANAGIRAM-KUMAR/acquisitions',
-    tagline: 'Hardened REST API: validated input, role-based routes, tested and containerized.',
-    description:
-      'Express 5 (ESM) split into routes, controllers, services, and models — Zod-validated at the edge, Drizzle migrations against Neon Postgres, JWT in http-only cookies, and Arcjet, Helmet, and Winston guarding and logging every request.',
-    stack: ['Node.js', 'Express 5', 'Drizzle ORM', 'PostgreSQL', 'Zod', 'JWT', 'Docker', 'Jest'],
-    features: [
-      'Layered layout: routes → controllers → services → models',
-      'Zod schema validation on every request body',
-      'JWT in http-only cookies with role-based access control',
-      'Drizzle Kit migrations and a committed coverage report',
-      'Arcjet, Helmet, CORS, and structured Winston logs',
-      'Actions: tests, lint/format, and a Docker image to Docker Hub',
-    ],
-    signals: [
-      { label: 'WORKFLOWS', value: 'tests · lint · docker' },
-      { label: 'TESTING', value: 'Jest + Supertest' },
-      { label: 'DATABASE', value: 'Drizzle + Neon (pg)' },
-      { label: 'SECURITY', value: 'Arcjet · Helmet · RBAC' },
-    ],
-    services: [
-      { name: 'HTTP CLIENT', note: 'cookie · bearer', layer: 'edge' },
-      { name: 'AUTH / RBAC', note: 'jwt + requireRole', layer: 'core' },
-      { name: 'VALIDATION', note: 'zod schemas', layer: 'core' },
-      { name: 'REST API', note: 'express 5 routes', layer: 'core' },
-      { name: 'DATA LAYER', note: 'drizzle orm', layer: 'core' },
-      { name: 'POSTGRESQL', note: 'neon', layer: 'data' },
-    ],
-  },
-  {
-    id: 'music-manager',
-    name: 'MusicManager',
-    kind: 'fullstack',
-    arch: 'fullstack',
-    icon: 'music',
-    repo: 'JANAGIRAM-KUMAR/MusicManager',
-    tagline: 'Spotify-style client and API: one playback store, a real admin dashboard, live updates.',
-    description:
-      'React 19 and Vite on the front, Express and Mongoose behind it. Zustand owns playback, library, and auth state; Clerk signs users in on both client and server; Cloudinary stores media streamed through Socket.IO.',
-    stack: ['React 19', 'TypeScript', 'Vite', 'Zustand', 'Express', 'MongoDB', 'Cloudinary', 'Clerk'],
-    features: [
-      'Spotify-style UI: resizable panels, player, album pages',
-      'Playback queue, seek, and controls held in Zustand',
-      'Admin dashboard for stats plus song and album CRUD',
-      'Clerk auth on the client and @clerk/express on the server',
-      'Real-time events over Socket.IO, cron jobs via node-cron',
-      'Seeded MongoDB catalog behind Mongoose models',
-    ],
-    signals: [
-      { label: 'WORKSPACE', value: 'client + server' },
-      { label: 'STATE', value: '3 Zustand stores' },
-      { label: 'AUTH', value: 'Clerk (web + express)' },
-      { label: 'MEDIA', value: 'Cloudinary uploads' },
-    ],
-    services: [
-      { name: 'REACT CLIENT', note: 'Vite · Tailwind 4', layer: 'edge' },
-      { name: 'ZUSTAND STORE', note: 'player · music · auth', layer: 'core' },
-      { name: 'EXPRESS API', note: 'routes + controllers', layer: 'core' },
-      { name: 'CLERK AUTH', note: 'session → jwt', layer: 'core' },
-      { name: 'MONGODB', note: 'mongoose models', layer: 'data' },
-      { name: 'CLOUDINARY', note: 'audio + covers', layer: 'data' },
-    ],
+    category: 'Databases & Cloud',
+    skills: ['PostgreSQL', 'MongoDB', 'MySQL', 'AWS (S3)'],
   },
 ]
 
 export const RESEARCH = {
-  title: 'An Overview of Artificial Intelligence Significance in Cloud Security',
+  title: 'AI Significance in Cloud Security: Adaptive Threat Detection',
   year: '2024',
-  description: 'Research exploring AI-driven threat detection for adaptive cloud security systems.',
+  description:
+    'Researched machine learning anomaly detection models (Random Forest, Isolation Forest) for cloud security threat analysis; presented findings on adaptive risk mitigation and behavioral profiling across distributed cloud infrastructure.',
 } as const
+
+export const ACHIEVEMENTS = [
+  {
+    title: 'Competitive Programming',
+    description: 'Solved 400+ Data Structures and Algorithms problems across LeetCode and NeetCode.',
+    badge: '400+ DSA Solved',
+  },
+  {
+    title: 'Production Engineering',
+    description:
+      'Built and deployed full-stack systems, event-driven microservices, AI agents, strict test coverage, and automated deployment pipelines.',
+    badge: 'Production Hardened',
+  },
+] as const

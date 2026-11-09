@@ -2,7 +2,7 @@ import emailjs from '@emailjs/browser'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Check, CircleAlert, Copy, Loader2, Mail, Send } from 'lucide-react'
 import { GithubIcon as Github, LinkedinIcon as Linkedin } from './icons'
-import { type ComponentType, type FormEvent, useState } from 'react'
+import { type ComponentType, type FormEvent, useEffect, useRef, useState } from 'react'
 import { PROFILE } from '../data/content'
 import { Panel, Section } from './ui'
 
@@ -14,7 +14,11 @@ const EMAILJS_PUBLIC_KEY =
   (import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined) || 'bkfDl801vABe-1wnM'
 const EMAILJS_ENABLED = Boolean(EMAILJS_PUBLIC_KEY)
 
-type SendStatus = 'idle' | 'sending' | 'sent' | 'error' | 'mail-client'
+// Cooldown between form submissions (seconds) to prevent quota exhaustion & spam flood
+const SUBMIT_COOLDOWN_SEC = 45
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+
+type SendStatus = 'idle' | 'sending' | 'sent' | 'error' | 'rate-limited' | 'mail-client'
 
 function ContactRow({
   icon: Icon,
@@ -68,19 +72,51 @@ function ContactRow({
 
 export function Contact() {
   const reduce = useReducedMotion()
+  const mountTimeRef = useRef(0)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
+  const [honeypot, setHoneypot] = useState('') // Bot trap field
   const [status, setStatus] = useState<SendStatus>('idle')
+
+  useEffect(() => {
+    mountTimeRef.current = Date.now()
+  }, [])
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
+
+    // 1. Bot Honeypot detection: bots automatically populate hidden fields
+    if (honeypot) {
+      // Silently discard bot submission without burning API quota
+      setStatus('sent')
+      setName('')
+      setEmail('')
+      setMessage('')
+      setTimeout(() => setStatus('idle'), 4000)
+      return
+    }
+
+    // 2. Submission speed check: humans take > 1.2s to fill out the form
+    if (Date.now() - mountTimeRef.current < 1200) {
+      setStatus('sent')
+      return
+    }
+
+    // 3. Client-side Rate Limit / Cooldown check
+    const lastSentTime = Number(sessionStorage.getItem('contact_last_sent') || '0')
+    const elapsedSec = (Date.now() - lastSentTime) / 1000
+    if (elapsedSec < SUBMIT_COOLDOWN_SEC) {
+      setStatus('rate-limited')
+      setTimeout(() => setStatus('idle'), 5000)
+      return
+    }
 
     const cleanName = name.trim().slice(0, 100)
     const cleanEmail = email.trim().slice(0, 254)
     const cleanMessage = message.trim().slice(0, 2000)
 
-    if (!cleanName || !cleanEmail || !cleanMessage) {
+    if (!cleanName || !cleanEmail || !cleanMessage || !EMAIL_REGEX.test(cleanEmail)) {
       setStatus('error')
       setTimeout(() => setStatus('idle'), 4000)
       return
@@ -100,6 +136,7 @@ export function Contact() {
           },
           { publicKey: EMAILJS_PUBLIC_KEY! },
         )
+        sessionStorage.setItem('contact_last_sent', String(Date.now()))
         setStatus('sent')
         setName('')
         setEmail('')
@@ -127,7 +164,14 @@ export function Contact() {
     },
     sending: { text: 'Sending message…', className: 'text-sage' },
     sent: { text: "Message sent — I'll get back to you soon.", className: 'text-term' },
-    error: { text: 'Send failed — please email me directly instead.', className: 'text-amber' },
+    'rate-limited': {
+      text: `Please wait ${SUBMIT_COOLDOWN_SEC}s between sending messages.`,
+      className: 'text-amber',
+    },
+    error: {
+      text: 'Send failed or invalid input — please verify email or contact directly.',
+      className: 'text-amber',
+    },
     'mail-client': {
       text: 'Opened in mail client — no data leaves your browser.',
       className: 'text-dim',
@@ -138,7 +182,6 @@ export function Contact() {
   return (
     <Section
       id="contact"
-      index="05"
       title="Contact"
       intro="The fastest way to reach me."
     >
@@ -179,6 +222,23 @@ export function Contact() {
             </div>
 
             <form onSubmit={submit} className="min-w-0 space-y-4">
+              {/* Bot Honeypot field (hidden from view and assistive tech) */}
+              <div
+                className="pointer-events-none absolute -left-[9999px] -top-[9999px] h-0 w-0 opacity-0"
+                aria-hidden="true"
+              >
+                <label htmlFor="company-website">Website</label>
+                <input
+                  id="company-website"
+                  type="text"
+                  name="company_website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
+
               <div className="grid min-w-0 gap-4 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
                 <div className="min-w-0">
                   <label htmlFor="c-name" className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.14em] text-dim">

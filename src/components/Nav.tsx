@@ -23,7 +23,7 @@ export function Nav() {
           className="flex min-w-0 items-center gap-2.5 rounded-full py-1 pl-1 pr-2"
           aria-label={`${PROFILE.name} — back to top`}
         >
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-sage font-display text-sm text-void">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-sage font-display text-sm font-semibold text-void">
             JK
           </span>
           <span className="hidden truncate text-sm font-medium text-ink min-[360px]:inline">
@@ -36,7 +36,7 @@ export function Nav() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-muted transition-colors hover:text-ink"
+              className="text-xs uppercase tracking-wider text-muted transition-colors hover:text-ink"
             >
               {link.label}
             </a>
@@ -71,14 +71,6 @@ export function Nav() {
                 {link.label}
               </a>
             ))}
-            <div className="mt-1 border-t border-white/[0.07] pt-1">
-              <a
-                href={`mailto:${PROFILE.email}`}
-                className="block rounded-xl px-4 py-3 text-sm text-ink transition-colors hover:bg-white/[0.06]"
-              >
-                Email me
-              </a>
-            </div>
           </div>
         </div>
       )}

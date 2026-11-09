@@ -10,7 +10,7 @@ export function Section({
   className = '',
 }: {
   id: string
-  index: string
+  index?: string
   title: string
   intro?: string
   children: ReactNode
@@ -19,7 +19,7 @@ export function Section({
   const reduce = useReducedMotion()
   return (
     <section id={id} className={`border-t border-white/[0.06] ${className}`}>
-      <div className="mx-auto grid w-full max-w-7xl gap-6 px-5 py-16 sm:gap-8 sm:px-8 sm:py-20 lg:grid-cols-[190px_1fr] lg:gap-14 lg:py-24">
+      <div className="mx-auto grid w-full max-w-7xl gap-6 px-5 py-10 sm:gap-8 sm:px-8 sm:py-14 lg:grid-cols-[190px_1fr] lg:gap-14 lg:py-16">
         <motion.header
           initial={reduce ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
