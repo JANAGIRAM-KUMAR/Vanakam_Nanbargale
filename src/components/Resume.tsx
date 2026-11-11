@@ -184,7 +184,7 @@ export function Resume() {
           role="dialog"
           aria-modal="true"
           aria-label="Resume document preview"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/90 backdrop-blur-sm"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               setIsOpen(false)
@@ -192,26 +192,26 @@ export function Resume() {
             }
           }}
         >
-          <div className="relative flex flex-col items-center max-w-4xl max-h-[92vh] w-full">
+          <div className="relative flex max-h-[96dvh] w-full max-w-4xl flex-col items-center">
             {/* Top Toolbar */}
-            <div className="w-full flex items-center justify-between pb-3 text-white border-b border-white/20">
-              <span className="font-mono text-xs uppercase tracking-wider text-white/80">
-                Janagiram_Kumar_Resume.pdf
+            <div className="w-full flex items-center justify-between gap-2 border border-[var(--line-color)] bg-[var(--card-bg)] px-3 py-2.5 sm:px-5 sm:py-3 text-[var(--text-color)] rounded-t-lg">
+              <span className="truncate font-mono text-xs uppercase tracking-widest font-bold">
+                <span className="hidden sm:inline">Janagiram_Kumar_</span>Resume.pdf
               </span>
 
-              <div className="flex items-center gap-3">
+              <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
                 <a
                   href={PROFILE.resumePdfUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="btn-secondary text-white border-white/30 hover:border-white min-h-[44px]"
+                  className="btn-secondary !min-h-[38px] !px-2.5 !py-1.5 sm:!px-4 sm:!py-2 text-xs"
                 >
                   Open PDF ↗
                 </a>
                 <a
                   href={PROFILE.resumePdfUrl}
                   download="Janagiram_Kumar_Resume.pdf"
-                  className="btn-primary min-h-[44px]"
+                  className="btn-primary !min-h-[38px] !px-2.5 !py-1.5 sm:!px-4 sm:!py-2 text-xs"
                 >
                   Download
                 </a>
@@ -222,20 +222,20 @@ export function Resume() {
                     setIsOpen(false)
                     triggerRef.current?.focus()
                   }}
-                  className="btn-secondary text-white border-white/30 hover:border-white min-h-[44px]"
+                  className="btn-secondary !min-h-[38px] !px-2.5 !py-1.5 sm:!px-4 sm:!py-2 text-xs"
                   aria-label="Close preview"
                 >
-                  Close (Esc)
+                  ✕<span className="hidden sm:inline"> (Esc)</span>
                 </button>
               </div>
             </div>
 
             {/* Document preview */}
-            <div className="mt-4 overflow-y-auto max-h-[calc(92vh-4rem)] bg-white shadow-2xl p-1 sm:p-2">
+            <div className="w-full flex-1 overflow-y-auto overflow-x-hidden max-h-[calc(96dvh-3.5rem)] bg-white shadow-2xl p-1 sm:p-2.5 border-x border-b border-[var(--line-color)] rounded-b-lg flex justify-center items-start">
               <img
                 src={PROFILE.resumePreviewUrl}
                 alt="Full resolution Janagiram Kumar resume"
-                className="max-h-[82vh] w-auto block object-contain"
+                className="w-full max-w-full h-auto object-contain select-none block"
               />
             </div>
           </div>
