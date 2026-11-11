@@ -112,7 +112,7 @@ export function Contact() {
   const statusMessages: Record<SendStatus, { text: string; color: string }> = {
     idle: {
       text: EMAILJS_ENABLED
-        ? `I'll get back to you as soon as I can.`
+        ? `Sends an email to ${PROFILE.email}`
         : 'Opens your default mail client.',
       color: 'text-[var(--muted-color)]',
     },
@@ -212,7 +212,7 @@ export function Contact() {
                 autoComplete="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Jane Doe"
+                placeholder="Your name"
                 className="w-full border-0 border-b border-[var(--line-color)] bg-transparent px-0 py-3 text-base text-[var(--text-color)] placeholder:text-[var(--muted-color)]/60 focus:border-[var(--accent-color)] focus:outline-none transition-colors"
               />
             </div>
@@ -232,7 +232,7 @@ export function Contact() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="jane@company.com"
+                placeholder="Your email"
                 className="w-full border-0 border-b border-[var(--line-color)] bg-transparent px-0 py-3 text-base text-[var(--text-color)] placeholder:text-[var(--muted-color)]/60 focus:border-[var(--accent-color)] focus:outline-none transition-colors"
               />
             </div>
