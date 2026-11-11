@@ -5,10 +5,8 @@ import { defineConfig, type Plugin } from 'vite'
 // Default public URL for SEO metadata (overridable via .env or CI).
 process.env.VITE_SITE_URL ??= 'https://janagiram.dpdns.org'
 
-// Best-effort Content Security Policy for hosts that cannot send response
-// headers (e.g. GitHub Pages). frame-ancestors is not allowed in a <meta>
-// policy; nginx.conf sends the full header including frame-ancestors.
-// Injected only during `vite build` so the dev server (HMR, eval) is unaffected.
+// Best-effort Content Security Policy for static hosting environments.
+// Injected only during `vite build` so local dev (HMR) remains unaffected.
 function htmlSecurityHeaders(): Plugin {
   const csp = [
     "default-src 'self'",
@@ -49,8 +47,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules/framer-motion')) return 'motion'
-          if (id.includes('node_modules/lucide-react')) return 'icons'
+          if (id.includes('node_modules/@emailjs')) return 'emailjs'
           if (id.includes('node_modules/react')) return 'vendor'
         },
       },

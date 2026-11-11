@@ -4,36 +4,11 @@ const YEAR = new Date().getFullYear()
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/[0.06]">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-7 text-xs sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-8">
-        <p className="text-dim">
-          © {YEAR} {PROFILE.name}
+    <footer className="border-t border-[var(--line-color)] py-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 sm:px-8 font-mono text-xs uppercase tracking-wider text-[var(--muted-color)]">
+        <p>
+          © {YEAR} {PROFILE.displayName}.
         </p>
-
-        <div className="flex items-center gap-5">
-          <a
-            href={PROFILE.github}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="py-1 text-muted transition-colors hover:text-ink"
-          >
-            GitHub
-          </a>
-          <a
-            href={PROFILE.linkedin}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="py-1 text-muted transition-colors hover:text-ink"
-          >
-            LinkedIn
-          </a>
-          <a
-            href={`mailto:${PROFILE.email}`}
-            className="py-1 text-muted transition-colors hover:text-ink"
-          >
-            Email
-          </a>
-        </div>
       </div>
     </footer>
   )
